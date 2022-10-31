@@ -2,20 +2,15 @@ import SwiftUI
 import SwiftHaptics
 import PrepDataTypes
 
-extension DiaryView.ListPage {
-    struct MealView: View {
-        @EnvironmentObject var diaryController: DiaryView.Controller
-        @StateObject var viewModel: ViewModel
-        let namespace: Namespace.ID
+struct MealView: View {
+    @EnvironmentObject var diaryController: DiaryController
+    @StateObject var viewModel: ViewModel
+    let namespace: Namespace.ID
 
-        init(meal: Meal, namespace: Namespace.ID) {
-            _viewModel = StateObject(wrappedValue: ViewModel(meal: meal))
-            self.namespace = namespace
-        }
+    init(meal: Meal, namespace: Namespace.ID) {
+        _viewModel = StateObject(wrappedValue: ViewModel(meal: meal))
+        self.namespace = namespace
     }
-}
-
-extension DiaryView.ListPage.MealView {
 
     var body: some View {
         Section {

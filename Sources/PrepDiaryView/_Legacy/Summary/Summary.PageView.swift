@@ -2,9 +2,9 @@ import SwiftUI
 import PrepViews
 import PrepDataTypes
 
-extension DiaryView.Summary {
+extension Summary {
     struct PageView: View {
-        @EnvironmentObject var summaryController: DiaryView.Summary.Controller
+        @EnvironmentObject var summaryController: Summary.Controller
         @State var hasAppeared = false
         @StateObject var viewModel: ViewModel
         
@@ -17,7 +17,7 @@ extension DiaryView.Summary {
     }
 }
 
-extension DiaryView.Summary.PageView {
+extension Summary.PageView {
 //    //TODO: Try initializing with day instead?
 //    init(date: Date = Date()) {
 ////        self.date = date

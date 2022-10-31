@@ -1,25 +1,21 @@
 import SwiftUI
 import SwiftUIPager
 
-extension DiaryView.Summary {
-    struct Pager: View {
-        @EnvironmentObject var summaryController: DiaryView.Summary.Controller
-        @ObservedObject var diaryPagerController: DiaryView.Pager.Controller
+struct SummaryPager: View {
+    @EnvironmentObject var summaryController: Summary.Controller
+    @ObservedObject var diaryPagerController: DiaryPager.Controller
 //        @EnvironmentObject var controller: Controller
-        
+    
 //        @Environment(\.managedObjectContext) private var viewContext
-//        @EnvironmentObject var diaryController: DiaryView.Controller
-    }
-}
-
-extension DiaryView.Summary.Pager {
+//        @EnvironmentObject var diaryController: DiaryController
+    
     var body: some View {
 //        Color.red
         Pager(page: diaryPagerController.page,
               data: diaryPagerController.dayIndices,
               id: \.self,
               content: { dayIndex in
-            DiaryView.Summary.PageView(date: diaryPagerController.dateForDayIndex(dayIndex))
+            Summary.PageView(date: diaryPagerController.dateForDayIndex(dayIndex))
                 .environmentObject(summaryController)
         })
         .sensitivity(.high)

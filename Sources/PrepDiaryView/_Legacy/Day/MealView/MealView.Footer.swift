@@ -2,9 +2,9 @@ import SwiftUI
 import SwiftHaptics
 import PrepDataTypes
 
-extension DiaryView.ListPage.MealView {
+extension MealView {
     struct Footer: View {
-        @EnvironmentObject var diaryController: DiaryView.Controller
+        @EnvironmentObject var diaryController: DiaryController
         
         //TODO: CoreData
 //        @ObservedObject var meal: Meal
@@ -12,7 +12,7 @@ extension DiaryView.ListPage.MealView {
     }
 }
 
-extension DiaryView.ListPage.MealView.Footer {
+extension MealView.Footer {
     var body: some View {
         content
         .listRowBackground(

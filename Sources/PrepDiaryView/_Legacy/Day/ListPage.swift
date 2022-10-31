@@ -3,22 +3,17 @@ import SwiftUISugar
 import SwiftHaptics
 import PrepDataTypes
 
-extension DiaryView {
-    struct ListPage: View {
-        
-        @Environment(\.managedObjectContext) private var viewContext
-        @EnvironmentObject var diaryController: DiaryView.Controller
-        
-        //TODO: CoreData
+struct ListPage: View {
+    
+    @Environment(\.managedObjectContext) private var viewContext
+    @EnvironmentObject var diaryController: DiaryController
+    
+    //TODO: CoreData
 //        @FetchRequest private var meals: FetchedResults<Meal>
-        var meals: [Meal]
-        
-        var date: Date
-        let namespace: Namespace.ID
-    }
-}
-
-extension DiaryView.ListPage {
+    var meals: [Meal]
+    
+    var date: Date
+    let namespace: Namespace.ID
     
     init(date: Date = Date(), namespace: Namespace.ID) {
         self.date = date
@@ -47,7 +42,7 @@ extension DiaryView.ListPage {
     var list: some View {
         List {
             ForEach(meals) { meal in
-                DiaryView.ListPage.MealView(
+                MealView(
                     meal: meal,
                     namespace: namespace
                 )

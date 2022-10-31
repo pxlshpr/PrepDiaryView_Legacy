@@ -3,30 +3,26 @@ import SwiftUISugar
 import SwiftUIPager
 import Timeline
 
-extension DiaryView {
-    struct Pager: View {
-        @Namespace private var namespace
-        @Environment(\.managedObjectContext) private var viewContext
-        @EnvironmentObject var controller: Controller
-        @EnvironmentObject var diaryController: DiaryView.Controller
-    }
-}
-
-extension DiaryView.Pager {
+struct DiaryPager: View {
+    @Namespace private var namespace
+    @Environment(\.managedObjectContext) private var viewContext
+    @EnvironmentObject var controller: Controller
+    @EnvironmentObject var diaryController: DiaryController
+    
     var body: some View {
         Pager(page: controller.page,
               data: controller.dayIndices,
               id: \.self,
               content: { dayIndex in
             if diaryController.isListView {
-                DiaryView.ListPage(
+                ListPage(
                     date: controller.dateForDayIndex(dayIndex),
                     namespace: namespace
                 )
                 .environment(\.managedObjectContext, viewContext)
                 .environmentObject(diaryController)
             } else {
-                DiaryView.TimelinePage(
+                TimelinePage(
                     date: controller.dateForDayIndex(dayIndex),
                     namespace: namespace
                 )

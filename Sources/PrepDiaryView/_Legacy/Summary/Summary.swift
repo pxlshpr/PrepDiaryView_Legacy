@@ -3,35 +3,30 @@ import SwiftUI
 import SwiftHaptics
 import PrepDataTypes
 
-extension DiaryView {
-    struct Summary: View {
-        
-        @ObservedObject var diaryPagerController: DiaryView.Pager.Controller
-        //TODO: CoreData
+struct Summary: View {
+    
+    @ObservedObject var diaryPagerController: DiaryPager.Controller
+    //TODO: CoreData
 //        @ObservedObject var day: Day
-        var day: Day
-        @StateObject var controller: Controller
-        
-        @State private var path: [Route] = []
-        @State var chartType: ChartType = .overview
-        @State var showingDatePicker = false
-        @State var hasAppeared = false
-        
-        let diarySummaryDetentChangedToMedium = NotificationCenter.default.publisher(for: .diarySummaryDetentChangedToMedium)
+    var day: Day
+    @StateObject var controller: Controller
+    
+    @State private var path: [Route] = []
+    @State var chartType: ChartType = .overview
+    @State var showingDatePicker = false
+    @State var hasAppeared = false
+    
+    let diarySummaryDetentChangedToMedium = NotificationCenter.default.publisher(for: .diarySummaryDetentChangedToMedium)
 
-        //TODO: Why are we loading 'day' here? Find a cleaner way of doing this
-        init(diaryPagerController: DiaryView.Pager.Controller, day: Day, delegate: DiaryViewSummaryDelegate? = nil) {
-            self.diaryPagerController = diaryPagerController
-            self.day = day
-            _controller = StateObject(
-                wrappedValue:
-                    Controller(diaryPagerController: diaryPagerController, delegate: delegate)
-            )
-        }
+    //TODO: Why are we loading 'day' here? Find a cleaner way of doing this
+    init(diaryPagerController: DiaryPager.Controller, day: Day, delegate: DiaryViewSummaryDelegate? = nil) {
+        self.diaryPagerController = diaryPagerController
+        self.day = day
+        _controller = StateObject(
+            wrappedValue:
+                Controller(diaryPagerController: diaryPagerController, delegate: delegate)
+        )
     }
-}
-
-extension DiaryView.Summary {
     
     var body: some View {
         //TODO: Include path here once we make FoodItem and Meal reusable to show charts for both of them
@@ -45,7 +40,7 @@ extension DiaryView.Summary {
                 .navigationDestination(for: Route.self) { route in
                     switch route {
                     case let .meal(meal):
-                        DiaryView.ListPage.MealView.Summary(meal: meal)
+                        MealView.Summary(meal: meal)
 //                    case let .foodItem(foodItem):
 //                        Text("Food Item")
                     case .foodItem:
@@ -88,7 +83,7 @@ extension DiaryView.Summary {
     }
     
     var pager: some View {
-        DiaryView.Summary.Pager(diaryPagerController: diaryPagerController)
+        SummaryPager(diaryPagerController: diaryPagerController)
             .environmentObject(controller)
     }
     
@@ -118,7 +113,7 @@ extension DiaryView.Summary {
     }
     
     var todayButton: some View {
-        DiaryView.TodayButton()
+        TodayButton()
             .environmentObject(diaryPagerController)
     }
     
@@ -339,7 +334,7 @@ extension DiaryView.Summary {
 
 //MARK: - Other Types
 
-extension DiaryView.Summary {
+extension Summary {
     enum Route: Hashable {
         case meal(Meal)
         case foodItem(FoodItem)

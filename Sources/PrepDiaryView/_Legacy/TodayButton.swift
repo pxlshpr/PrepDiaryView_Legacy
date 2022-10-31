@@ -1,19 +1,17 @@
 import SwiftUI
 
-extension DiaryView {
-    struct TodayButton: View {
-        
-        @EnvironmentObject var diaryPagerController: DiaryView.Pager.Controller
-        @State var currentDate: Date = Date()
-        
-        let diaryWillChangeDate = NotificationCenter.default.publisher(for: .diaryWillChangeDate)
-        let dayPagerWillChangeDate = NotificationCenter.default.publisher(for: .dayPagerWillChangeDate)
-        let weekPagerWillChangeDate = NotificationCenter.default.publisher(for: .weekPagerWillChangeDate)
-        let didPickDateOnDayView = NotificationCenter.default.publisher(for: .didPickDateOnDayView)
-    }
+struct TodayButton: View {
+    
+    @EnvironmentObject var diaryPagerController: DiaryPager.Controller
+    @State var currentDate: Date = Date()
+    
+    let diaryWillChangeDate = NotificationCenter.default.publisher(for: .diaryWillChangeDate)
+    let dayPagerWillChangeDate = NotificationCenter.default.publisher(for: .dayPagerWillChangeDate)
+    let weekPagerWillChangeDate = NotificationCenter.default.publisher(for: .weekPagerWillChangeDate)
+    let didPickDateOnDayView = NotificationCenter.default.publisher(for: .didPickDateOnDayView)
 }
 
-extension DiaryView.TodayButton {
+extension TodayButton {
 
     var body: some View {
         Group {

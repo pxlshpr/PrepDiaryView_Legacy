@@ -3,7 +3,7 @@ import SwiftUI
 import PrepDataTypes
 import SwiftHaptics
 
-extension DiaryView.ListPage.MealView {
+extension MealView {
     struct Summary: View {
         //TODO: CoreData
 //        @ObservedObject var meal: Meal
@@ -28,7 +28,7 @@ extension DiaryView.ListPage.MealView {
     }
 }
 
-extension DiaryView.ListPage.MealView.Summary {
+extension MealView.Summary {
     
     var body: some View {
         Group {
@@ -296,28 +296,6 @@ extension DiaryView.ListPage.MealView.Summary {
         guard let foodItem = foodItem else { return }
         Haptics.feedback(style: .rigid)
         selectedFoodItem = [foodItem]
-    }
-}
-
-extension DiaryView.ListPage.MealView.Summary {
-    enum BreakdownType: CaseIterable, CustomStringConvertible {
-        case energy
-        case carbs
-        case fat
-        case protein
-        
-        var description: String {
-            switch self {
-            case .energy:
-                return "Energy"
-            case .carbs:
-                return "Carbohydrate"
-            case .fat:
-                return "Fat"
-            case .protein:
-                return "Protein"
-            }
-        }
     }
 }
 

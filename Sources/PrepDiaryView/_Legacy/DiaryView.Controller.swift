@@ -3,50 +3,48 @@ import SwiftUIPager
 import SwiftHaptics
 import PrepDataTypes
 
-extension DiaryView {
-    class Controller: ObservableObject {
-        
-        struct AddMealDetent {
-            static let collapsed: PresentationDetent = .height(400)
-            static let timeSettings: PresentationDetent = .height(450)
-        }
-        
-        let pagerController: Pager.Controller
-        
-        @Published var mealToAddFoodTo: Meal? = nil
-        @Published var mealToEdit: Meal? = nil
-        
-        @Published var mealToShowChartsFor: Meal? = nil
-        @Published var dayToShowChartsFor: Day? = nil
+class DiaryController: ObservableObject {
+    
+    struct AddMealDetent {
+        static let collapsed: PresentationDetent = .height(400)
+        static let timeSettings: PresentationDetent = .height(450)
+    }
+    
+    let pagerController: DiaryPager.Controller
+    
+    @Published var mealToAddFoodTo: Meal? = nil
+    @Published var mealToEdit: Meal? = nil
+    
+    @Published var mealToShowChartsFor: Meal? = nil
+    @Published var dayToShowChartsFor: Day? = nil
 
-        @Published var showingDatePicker = false
-        @Published var showingAddMeal = false
-        @Published var showingSettings = false
+    @Published var showingDatePicker = false
+    @Published var showingAddMeal = false
+    @Published var showingSettings = false
 
-        @Published var isListView = true
-        
-        @Published var addMealDetent: PresentationDetent = AddMealDetent.collapsed
-        
-        @Published var selectedSummaryDetent: PresentationDetent = .medium {
-            didSet {
-                if selectedSummaryDetent == .medium {
-                    NotificationCenter.default.post(name: .diarySummaryDetentChangedToMedium, object: nil)
-                }
+    @Published var isListView = true
+    
+    @Published var addMealDetent: PresentationDetent = AddMealDetent.collapsed
+    
+    @Published var selectedSummaryDetent: PresentationDetent = .medium {
+        didSet {
+            if selectedSummaryDetent == .medium {
+                NotificationCenter.default.post(name: .diarySummaryDetentChangedToMedium, object: nil)
             }
         }
-        
-        @Published var presentationDetents: Set<PresentationDetent> = [AddMealDetent.collapsed, .large]
-        
-        var restoreFilePickDate: Date = Date()
+    }
+    
+    @Published var presentationDetents: Set<PresentationDetent> = [AddMealDetent.collapsed, .large]
+    
+    var restoreFilePickDate: Date = Date()
 
-        init(pagerController: Pager.Controller) {
-            self.pagerController = pagerController
-            addNotificationObservers()
-        }
+    init(pagerController: DiaryPager.Controller) {
+        self.pagerController = pagerController
+        addNotificationObservers()
     }
 }
 
-extension DiaryView.Controller {
+extension DiaryController {
     func addNotificationObservers() {
 //        NotificationCenter.default.addObserver(self, selector: #selector(didPickRestoreFile),
 //            name: .didPickRestoreFile, object: nil)
@@ -57,7 +55,7 @@ extension DiaryView.Controller {
     }
 }
 
-extension DiaryView.Controller {
+extension DiaryController {
     var viewChangeImageName: String {
         isListView ? timelineImageName : listImageName
     }
@@ -72,7 +70,7 @@ extension DiaryView.Controller {
     }
 }
 
-extension DiaryView.Controller: WeekDatePickerDelegate {
+extension DiaryController: WeekDatePickerDelegate {
     func didTapDayButton() {
         Haptics.feedback(style: .rigid)
         showingDatePicker = true
@@ -87,7 +85,7 @@ extension DiaryView.Controller: WeekDatePickerDelegate {
     }
 }
 
-extension DiaryView.Controller: DiaryViewSummaryDelegate {
+extension DiaryController: DiaryViewSummaryDelegate {
     func didShowDatePicker() {
         selectedSummaryDetent = .large
     }

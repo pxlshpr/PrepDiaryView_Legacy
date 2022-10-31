@@ -1,6 +1,6 @@
 import Foundation
 
-extension DiaryView.Summary.PageView {
+extension Summary.PageView {
     
     class ViewModel: ObservableObject {
         
@@ -14,7 +14,7 @@ extension DiaryView.Summary.PageView {
     }
 }
 
-extension DiaryView.Summary.PageView.ViewModel {
+extension Summary.PageView.ViewModel {
     
     func fetchData() {
     }

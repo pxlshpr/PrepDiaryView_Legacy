@@ -1,7 +1,7 @@
 import SwiftUI
 import PrepDataTypes
 
-extension DiaryView.ListPage.MealView {
+extension MealView {
     class ViewModel: ObservableObject {
         
         @Published var meal: Meal
@@ -18,7 +18,7 @@ extension DiaryView.ListPage.MealView {
     }
 }
 
-extension DiaryView.ListPage.MealView.ViewModel {
+extension MealView.ViewModel {
     @objc func didAddFoodItemToMeal(notification: Notification) {
         guard let userInfo = notification.userInfo as? [String: AnyObject],
               let foodItem = userInfo[Notification.Keys.foodItem] as? FoodItem
@@ -39,7 +39,7 @@ extension DiaryView.ListPage.MealView.ViewModel {
     }
 }
 
-extension DiaryView.ListPage.MealView.ViewModel {
+extension MealView.ViewModel {
     
     var animationID: String {
         meal.id.uuidString

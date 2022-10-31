@@ -2,9 +2,9 @@ import SwiftUI
 //import Charts
 import PrepDataTypes
 
-extension DiaryView.Summary.PageView {
+extension Summary.PageView {
     struct MealBreakdownSection: View {
-        @EnvironmentObject var controller: DiaryView.Summary.Controller
+        @EnvironmentObject var controller: Summary.Controller
         
         //TODO: CoreData
         var day: Day
@@ -12,7 +12,7 @@ extension DiaryView.Summary.PageView {
     }
 }
 
-extension DiaryView.Summary.PageView.MealBreakdownSection {
+extension Summary.PageView.MealBreakdownSection {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .firstTextBaseline) {

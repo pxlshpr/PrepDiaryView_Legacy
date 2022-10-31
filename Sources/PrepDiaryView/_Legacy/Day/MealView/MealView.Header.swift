@@ -2,17 +2,17 @@ import SwiftUI
 import SwiftHaptics
 import SwiftUISugar
 
-extension DiaryView.ListPage.MealView {
+extension MealView {
     struct Header: View {
         @Environment(\.colorScheme) var colorScheme
-        @EnvironmentObject var diaryController: DiaryView.Controller
+        @EnvironmentObject var diaryController: DiaryController
         @ObservedObject var viewModel: ViewModel
         
         let namespace: Namespace.ID
     }
 }
 
-extension DiaryView.ListPage.MealView.Header {
+extension MealView.Header {
     var body: some View {
         content
         .listRowBackground(
