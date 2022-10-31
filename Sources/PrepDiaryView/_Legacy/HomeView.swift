@@ -8,6 +8,7 @@ import Camera
 public struct HomeView: View {
     
     @State var showingAddMenu = false
+    @State var showingAppMenu = false
     @State var showingBarcodeScanner = false
     @State var showingAddMeal = false
     @State var showingSettings = false
@@ -26,6 +27,7 @@ public struct HomeView: View {
             .onAppear(perform: appeared)
             .sheet(isPresented: $showingBarcodeScanner) { barcodeScanner }
             .bottomMenu(isPresented: $showingAddMenu, menu: addBottomMenu)
+            .bottomMenu(isPresented: $showingAppMenu, menu: appBottomMenu)
 //            .sheet(item: $controller.mealToAddFoodTo) { meal in
 //                Text("PrepSearch(meal: meal)")
 //                //                SearchFoodView(meal: meal)
@@ -56,7 +58,7 @@ public struct HomeView: View {
     var content: some View {
         DiaryView(
             actionButton: addButton,
-            menuButton: topMenu,
+            menuButton: appMenu,
             bottomCenterView: foodMeter
         )
     }
@@ -91,23 +93,10 @@ public struct HomeView: View {
         }
     }
     
-    var topMenu: some View {
-        Menu {
-            
-            Button {
-//                NotificationCenter.default.post(name: .switchToLegacyUI, object: nil)
-            } label: {
-                Label("Switch to Legacy UI", systemImage: "rectangle.2.swap")
-            }
-
-            Divider()
-
-            Button {
-                showingSettings = true
-            } label: {
-                Label("Settings", systemImage: "gear")
-            }
-
+    var appMenu: some View {
+        Button {
+            Haptics.feedback(style: .soft)
+            showingAppMenu = true
         } label: {
             Image(systemName: "ellipsis.circle")
         }
@@ -146,42 +135,66 @@ public struct HomeView: View {
     }
     
     //MARK: - Add Menu
-    
-    var addBottomMenu: BottomMenu {
-        BottomMenu(groups: [addMealGroup, addFoodGroup])
-    }
-    
-    var addFoodGroup: BottomMenuActionGroup {
-        var addFood: BottomMenuAction {
-            BottomMenuAction(title: "Add food to a new meal", systemImage: "plus") {
+
+    var appBottomMenu: BottomMenu {
+        var settingsAction: BottomMenuAction {
+            BottomMenuAction(title: "Settings", systemImage: "gear") {
+                
             }
+        }
+        return BottomMenu(action: settingsAction)
+    }
+
+    var addBottomMenu: BottomMenu {
+        var addFoodGroup: BottomMenuActionGroup {
+            var title: BottomMenuAction { BottomMenuAction(title: "Add a Food") }
+            var searchFood: BottomMenuAction {
+                BottomMenuAction(title: "Search", systemImage: "magnifyingglass") {
+                }
+            }
+            
+            var scanFood: BottomMenuAction {
+                BottomMenuAction(title: "Scan a Barcode", systemImage: "barcode.viewfinder") {
+                    showingBarcodeScanner = true
+                }
+            }
+            var scanFoodLabel: BottomMenuAction {
+                BottomMenuAction(title: "Scan Food Labels", systemImage: "text.viewfinder") {
+                    showingBarcodeScanner = true
+                }
+            }
+
+            var createFood: BottomMenuAction {
+                BottomMenuAction(title: "Create New", systemImage: "plus.circle") {
+                }
+            }
+
+            return BottomMenuActionGroup(actions: [
+                title,
+                createFood,
+                scanFood,
+                searchFood
+            ])
+        }
+
+        var addMealGroup: BottomMenuActionGroup {
+            var title: BottomMenuAction { BottomMenuAction(title: "Add a Meal") }
+            var copyMealTemplate: BottomMenuAction {
+                BottomMenuAction(title: "Use a Template", systemImage: "plus.square.on.square") {
+                }
+            }
+            var addMeal: BottomMenuAction {
+                BottomMenuAction(title: "Create New", systemImage: "calendar.badge.plus") {
+                    showingAddMeal = true
+                }
+            }
+
+            return BottomMenuActionGroup(actions: [title, copyMealTemplate, addMeal])
         }
         
-        var scanFood: BottomMenuAction {
-            BottomMenuAction(title: "Scan barcode", systemImage: "barcode.viewfinder") {
-                showingBarcodeScanner = true
-            }
-        }
-
-        var createFood: BottomMenuAction {
-            BottomMenuAction(title: "Create a new food", systemImage: "carrot") {
-            }
-        }
-
-        return BottomMenuActionGroup(actions: [createFood, scanFood, addFood])
-    }
-
-    var addMealGroup: BottomMenuActionGroup {
-        var copyMealTemplate: BottomMenuAction {
-            BottomMenuAction(title: "Copy a meal template", systemImage: "plus.square.on.square") {
-            }
-        }
-        var addMeal: BottomMenuAction {
-            BottomMenuAction(title: "Add a meal", systemImage: "rectangle.stack.badge.plus") {
-                showingAddMeal = true
-            }
-        }
-
-        return BottomMenuActionGroup(actions: [copyMealTemplate, addMeal])
+        return BottomMenu(groups: [
+            addMealGroup,
+            addFoodGroup
+        ])
     }
 }
