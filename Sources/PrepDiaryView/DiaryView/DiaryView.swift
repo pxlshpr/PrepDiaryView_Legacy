@@ -4,6 +4,7 @@ import SwiftHaptics
 import SwiftUISugar
 import PrepViews
 import PrepMealForm
+import Camera
 //import Charts
 
 public struct DiaryView: View {
@@ -16,7 +17,8 @@ public struct DiaryView: View {
     
     @State private var showingGoalPicker = false
     @State private var showingAddMenu = false
-    
+    @State private var showingBarcodeScanner = false
+
     //TODO: Move to viewModel
     @StateObject var foodMeterViewModel = FoodMeter.ViewModel(component: .energy, goal: 0, burned: 0, food: 0, eaten: 0)
     
@@ -44,6 +46,7 @@ public struct DiaryView: View {
             .toolbar { bottomToolbarContent }
             .toolbar { navigationLeadingContent }
             .toolbar { navigationTrailingContent }
+            .sheet(isPresented: $showingBarcodeScanner) { barcodeScanner }
             .sheet(item: $controller.mealToAddFoodTo) { meal in
                 Text("PrepSearch(meal: meal)")
 //                SearchFoodView(meal: meal)
@@ -89,6 +92,11 @@ public struct DiaryView: View {
         updateMeter()
     }
     
+    var barcodeScanner: some View {
+        BarcodeScanner { barcodes in
+            print("Scanned \(barcodes)")
+        }
+    }
     var datePicker: some View {
         WeekDatePicker(delegate: controller)
             //TODO: DatePicker
