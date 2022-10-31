@@ -16,11 +16,12 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/pxlshpr/PrepDataTypes", from: "0.0.49"),
+        .package(url: "https://github.com/pxlshpr/PrepMealForm", from: "0.0.3"),
         .package(url: "https://github.com/pxlshpr/PrepViews", from: "0.0.8"),
-        .package(url: "https://github.com/pxlshpr/NamePicker", from: "0.0.18"),
-        .package(url: "https://github.com/pxlshpr/SwiftUISugar", from: "0.0.208"),
+        .package(url: "https://github.com/pxlshpr/NamePicker", from: "0.0.19"),
+        .package(url: "https://github.com/pxlshpr/SwiftUISugar", from: "0.0.210"),
         .package(url: "https://github.com/pxlshpr/SwiftHaptics", from: "0.1.3"),
-        .package(url: "https://github.com/pxlshpr/Timeline", from: "0.0.45"),
+        .package(url: "https://github.com/pxlshpr/Timeline", from: "0.0.51"),
         
         .package(url: "https://github.com/fermoya/SwiftUIPager", from: "2.5.0"),
    ],
@@ -31,6 +32,7 @@ let package = Package(
             name: "PrepDiaryView",
             dependencies: [
                 .product(name: "PrepDataTypes", package: "prepdatatypes"),
+                .product(name: "PrepMealForm", package: "prepmealform"),
                 .product(name: "PrepViews", package: "prepviews"),
                 .product(name: "NamePicker", package: "namepicker"),
                 .product(name: "SwiftHaptics", package: "swifthaptics"),

@@ -3,6 +3,7 @@ import SwiftUIPager
 import SwiftHaptics
 import SwiftUISugar
 import PrepViews
+import PrepMealForm
 //import Charts
 
 public struct DiaryView: View {
@@ -13,8 +14,8 @@ public struct DiaryView: View {
     @StateObject var controller: Controller
     @StateObject var pagerController: Pager.Controller
     
-    //TODO: Move these to controller
     @State private var showingGoalPicker = false
+    @State private var showingAddMenu = false
     
     //TODO: Move to viewModel
     @StateObject var foodMeterViewModel = FoodMeter.ViewModel(component: .energy, goal: 0, burned: 0, food: 0, eaten: 0)
@@ -67,11 +68,8 @@ public struct DiaryView: View {
                     .presentationDetents([.medium, .large])
             }
             .sheet(isPresented: $controller.showingAddMeal) {
-                DiaryView.AddMeal()
-                    .environmentObject(controller)
-                    .environmentObject(pagerController)
+                MealForm(date: Date(), name: "Meal 1", recents: ["Recents"], presets: ["Presets"])
                     .presentationDetents([.medium, .large])
-//                    .presentationDetents(controller.presentationDetents, selection: $controller.addMealDetent)
                     .presentationDragIndicator(.hidden)
             }
             .sheet(isPresented: $controller.showingSettings) {
@@ -84,6 +82,7 @@ public struct DiaryView: View {
             }
             .onReceive(foodItemCompletionDidChange, perform: foodItemCompletionDidChange)
         }
+        .bottomMenu(isPresented: $showingAddMenu, menu: addMenu)
     }
     
     func foodItemCompletionDidChange(notification: Notification) {
@@ -193,7 +192,7 @@ public struct DiaryView: View {
         ToolbarItemGroup(placement: .bottomBar) {
             ZStack {
                 HStack {
-                    addMenu
+                    addButton
                     Spacer()
                 }
                 HStack {
@@ -211,35 +210,78 @@ public struct DiaryView: View {
     
     //MARK: - Add Menu
     
-    var addMenu: some View {
-        Menu {
-            Button {
+    var addMenu: BottomMenu {
+        BottomMenu(groups: [addMealGroup, addFoodGroup])
+    }
+    
+    var addFoodGroup: BottomMenuActionGroup {
+        var addFood: BottomMenuAction {
+            BottomMenuAction(title: "Add food to a new meal", systemImage: "plus") {
+            }
+        }
+        
+        var scanFood: BottomMenuAction {
+            BottomMenuAction(title: "Scan barcode", systemImage: "barcode.viewfinder") {
+            }
+        }
+
+        var createFood: BottomMenuAction {
+            BottomMenuAction(title: "Create a new food", systemImage: "carrot") {
+            }
+        }
+
+        return BottomMenuActionGroup(actions: [createFood, scanFood, addFood])
+    }
+
+    var addMealGroup: BottomMenuActionGroup {
+        var copyMealTemplate: BottomMenuAction {
+            BottomMenuAction(title: "Copy a meal template", systemImage: "plus.square.on.square") {
+            }
+        }
+        var addMeal: BottomMenuAction {
+            BottomMenuAction(title: "Add a meal", systemImage: "rectangle.stack.badge.plus") {
                 controller.showingAddMeal = true
-            } label: {
-                Label("Add Meal", systemImage: "rectangle.stack.badge.plus")
             }
-            Divider()
-            Button {
-                
-            } label: {
-                Label("Add Food to Meal 1", systemImage: "plus")
-            }
-            Divider()
-            Button {
-                
-            } label: {
-                Label("New Food", systemImage: "plus.viewfinder")
-            }
-            Button {
-                
-            } label: {
-                Label("Scan Food Label", systemImage: "text.viewfinder")
-            }
+        }
+
+        return BottomMenuActionGroup(actions: [copyMealTemplate, addMeal])
+    }
+
+    var addButton: some View {
+        Button {
+            Haptics.feedback(style: .soft)
+            showingAddMenu = true
         } label: {
             Image(systemName: "plus")
-        } primaryAction: {
-            /// Not working on iOS 16 so we'll need to test this after the GM is released
-            controller.showingAddMeal = true
         }
+//        Menu {
+//            Button {
+//                controller.showingAddMeal = true
+//            } label: {
+//                Label("Add Meal", systemImage: "rectangle.stack.badge.plus")
+//            }
+//            Divider()
+//            Button {
+//
+//            } label: {
+//                Label("Add Food to Meal 1", systemImage: "plus")
+//            }
+//            Divider()
+//            Button {
+//
+//            } label: {
+//                Label("New Food", systemImage: "plus.viewfinder")
+//            }
+//            Button {
+//
+//            } label: {
+//                Label("Scan Food Label", systemImage: "text.viewfinder")
+//            }
+//        } label: {
+//            Image(systemName: "plus")
+//        } primaryAction: {
+//            /// Not working on iOS 16 so we'll need to test this after the GM is released
+//            controller.showingAddMeal = true
+//        }
     }
 }

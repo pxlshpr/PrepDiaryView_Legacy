@@ -6,8 +6,6 @@ import PrepDataTypes
 extension DiaryView {
     struct ListPage: View {
         
-        @Environment(\.namespace) var namespace
-        
         @Environment(\.managedObjectContext) private var viewContext
         @EnvironmentObject var diaryController: DiaryView.Controller
         
@@ -16,16 +14,18 @@ extension DiaryView {
         var meals: [Meal]
         
         var date: Date
+        let namespace: Namespace.ID
     }
 }
 
 extension DiaryView.ListPage {
     
-    init(date: Date = Date()) {
+    init(date: Date = Date(), namespace: Namespace.ID) {
         self.date = date
         
         //TODO: CoreData
         self.meals = []
+        self.namespace = namespace
 //        let predicate: NSPredicate
 //        if let day = Store.shared.day(forDate: date) {
 //            predicate = NSPredicate(format: "day = %@", day)
@@ -47,8 +47,11 @@ extension DiaryView.ListPage {
     var list: some View {
         List {
             ForEach(meals) { meal in
-                DiaryView.ListPage.MealView(meal: meal)
-                    .environmentObject(diaryController)
+                DiaryView.ListPage.MealView(
+                    meal: meal,
+                    namespace: namespace
+                )
+                .environmentObject(diaryController)
             }
             if !meals.isEmpty {
                 Spacer().frame(height: 20)

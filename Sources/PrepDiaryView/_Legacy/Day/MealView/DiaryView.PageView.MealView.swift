@@ -6,9 +6,11 @@ extension DiaryView.ListPage {
     struct MealView: View {
         @EnvironmentObject var diaryController: DiaryView.Controller
         @StateObject var viewModel: ViewModel
+        let namespace: Namespace.ID
 
-        init(meal: Meal) {
+        init(meal: Meal, namespace: Namespace.ID) {
             _viewModel = StateObject(wrappedValue: ViewModel(meal: meal))
+            self.namespace = namespace
         }
     }
 }
@@ -17,10 +19,16 @@ extension DiaryView.ListPage.MealView {
 
     var body: some View {
         Section {
-            Header(viewModel: viewModel)
-                .environmentObject(diaryController)
+            Header(
+                viewModel: viewModel,
+                namespace: namespace
+            )
+            .environmentObject(diaryController)
             ForEach(viewModel.foodItems) { item in
-                DiaryItemView(item: item)
+                DiaryItemView(
+                    item: item,
+                    namespace: namespace
+                )
             }
             Footer(meal: viewModel.meal)
                 .environmentObject(diaryController)

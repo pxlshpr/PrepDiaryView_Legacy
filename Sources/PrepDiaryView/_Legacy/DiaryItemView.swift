@@ -5,13 +5,14 @@ import PrepDataTypes
 
 struct DiaryItemView: View {
     
-    @Environment(\.namespace) var namespace
     @Environment(\.colorScheme) var colorScheme
-    
+
     //TODO: CoreData
 //    @ObservedObject var item: FoodItem
     var item: FoodItem
-    
+
+    let namespace: Namespace.ID
+
     var body: some View {
         HStack {
             optionalEmojiText

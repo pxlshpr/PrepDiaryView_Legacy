@@ -4,8 +4,11 @@ import PrepDataTypes
 
 extension DiaryView {
     struct TimelinePage: View {
+        
         @Environment(\.managedObjectContext) private var viewContext
         @EnvironmentObject var diaryController: DiaryView.Controller
+        
+        let namespace: Namespace.ID
         
         //TODO: CoreData
 //        @FetchRequest private var meals: FetchedResults<Meal>
@@ -18,8 +21,9 @@ extension DiaryView {
 
 extension DiaryView.TimelinePage {
     
-    init(date: Date = Date()) {
+    init(date: Date = Date(), namespace: Namespace.ID) {
         self.date = date
+        self.namespace = namespace
         
         //TODO: CoreData
         meals = []
@@ -45,7 +49,7 @@ extension DiaryView.TimelinePage {
     }
 
     var timeline: some View {
-        Timeline(items: timelineItems)
+        Timeline(items: timelineItems, matchedGeometryNamespace: namespace)
             .background(Color(.systemGroupedBackground))
     }
 

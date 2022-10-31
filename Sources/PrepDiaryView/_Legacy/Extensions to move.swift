@@ -292,31 +292,6 @@ extension Food {
 
 }
 
-extension Date {
-    var shortString: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMM dd, h:mm a"
-        return formatter.string(from: self)
-    }
-    
-    var shortTimeString: String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .none
-        formatter.timeStyle = .short
-        return formatter.string(from: self)
-    }
-}
-
-extension Date {
-    var isInWeeHours: Bool {
-        Calendar.current.component(.hour, from: self) <= 5
-    }
-    
-    var atEndOfWeeHours: Date {
-        Calendar.current.date(bySettingHour: 5, minute: 55, second: 00, of: self) ?? self
-    }
-}
-
 //MARK: - Reusable
 
 import SwiftUI

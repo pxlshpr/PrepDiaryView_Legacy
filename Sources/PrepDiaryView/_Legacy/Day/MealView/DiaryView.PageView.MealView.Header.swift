@@ -4,11 +4,11 @@ import SwiftUISugar
 
 extension DiaryView.ListPage.MealView {
     struct Header: View {
-        @Environment(\.namespace) var namespace
         @Environment(\.colorScheme) var colorScheme
-//        @EnvironmentObject var namespaceWrapper: NamespaceWrapper
         @EnvironmentObject var diaryController: DiaryView.Controller
         @ObservedObject var viewModel: ViewModel
+        
+        let namespace: Namespace.ID
     }
 }
 
