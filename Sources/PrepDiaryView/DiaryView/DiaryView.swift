@@ -200,12 +200,12 @@ public struct DiaryView: View {
         ToolbarItemGroup(placement: .bottomBar) {
             ZStack {
                 HStack {
-                    addButton
+                    listViewButton
                     Spacer()
                 }
                 HStack {
                     Spacer()
-                    listViewButton
+                    addButton
                 }
                 HStack {
                     Spacer()
@@ -230,6 +230,7 @@ public struct DiaryView: View {
         
         var scanFood: BottomMenuAction {
             BottomMenuAction(title: "Scan barcode", systemImage: "barcode.viewfinder") {
+                showingBarcodeScanner = true
             }
         }
 
