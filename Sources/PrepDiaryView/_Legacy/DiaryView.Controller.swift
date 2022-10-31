@@ -22,9 +22,6 @@ extension DiaryView {
         @Published var showingDatePicker = false
         @Published var showingAddMeal = false
         @Published var showingSettings = false
-        @Published var showingRestoreFilePicker = false
-        @Published var showingBackupFilePicker = false
-        @Published var showingRestoreOverlay = false
 
         @Published var isListView = true
         

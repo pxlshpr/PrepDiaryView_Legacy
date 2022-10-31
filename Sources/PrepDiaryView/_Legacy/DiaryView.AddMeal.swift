@@ -148,11 +148,11 @@ extension DiaryView.AddMeal {
     
     var timeString: String {
         return "Time String goes here"
-        if time.startOfDay == Date().startOfDay {
-            return "Today \(time.shortTimeString)"
-        } else {
-            return time.shortString
-        }
+//        if time.startOfDay == Date().startOfDay {
+//            return "Today \(time.shortTimeString)"
+//        } else {
+//            return time.shortString
+//        }
     }
     
     var addButtonSection: some View {

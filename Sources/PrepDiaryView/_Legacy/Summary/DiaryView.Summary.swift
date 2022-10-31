@@ -46,7 +46,9 @@ extension DiaryView.Summary {
                     switch route {
                     case let .meal(meal):
                         DiaryView.ListPage.MealView.Summary(meal: meal)
-                    case let .foodItem(foodItem):
+//                    case let .foodItem(foodItem):
+//                        Text("Food Item")
+                    case .foodItem:
                         Text("Food Item")
                     }
                 }

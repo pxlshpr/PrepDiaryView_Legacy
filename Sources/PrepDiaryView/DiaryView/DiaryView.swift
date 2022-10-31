@@ -5,7 +5,7 @@ import SwiftUISugar
 import PrepViews
 //import Charts
 
-struct DiaryView: View {
+public struct DiaryView: View {
     
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.colorScheme) var colorScheme
@@ -22,17 +22,14 @@ struct DiaryView: View {
     //TODO: Move notification observer and updateMeter() function to viewModel
     let foodItemCompletionDidChange = NotificationCenter.default.publisher(for: .foodItemCompletionDidChange)
 
-    init() {
+    public init() {
         let pagerController = Pager.Controller()
         _pagerController = StateObject(wrappedValue: pagerController)
         _controller = StateObject(wrappedValue: Controller(pagerController: pagerController))
     }
     
-    var body: some View {
-        ZStack {
-            navigationView
-            restoreOverlay
-        }
+    public var body: some View {
+        navigationView
     }
     
     var navigationView: some View {
@@ -77,22 +74,6 @@ struct DiaryView: View {
 //                    .presentationDetents(controller.presentationDetents, selection: $controller.addMealDetent)
                     .presentationDragIndicator(.hidden)
             }
-            .sheet(isPresented: $controller.showingRestoreFilePicker) {
-                Text("Restore File Picker")
-//                DocumentPicker(delegate: Store.shared)
-            }
-            .sheet(isPresented: $controller.showingBackupFilePicker, onDismiss: {
-//                Store.cleanBackupFiles()
-            }) {
-                Text("Backup File Picke")
-//                if let url = archiveUrl {
-//                    DocumentPicker(url: url)
-//                        .accentColor(Color.accentColor)
-//                        .id(url.absoluteString)
-//                } else {
-//                    Color.red
-//                }
-            }
             .sheet(isPresented: $controller.showingSettings) {
                 Text("Settings View")
 //                SettingsView()
@@ -107,29 +88,6 @@ struct DiaryView: View {
     
     func foodItemCompletionDidChange(notification: Notification) {
         updateMeter()
-    }
-    
-    //MARK: - Views
-    @ViewBuilder
-    var restoreOverlay: some View {
-        if controller.showingRestoreOverlay {
-            ZStack {
-                Color.accentColor
-                    .preferredColorScheme(colorScheme)
-                VStack {
-                    Text("Restoring Backup")
-                        .font(.largeTitle)
-                        .fontWeight(.black)
-                        .foregroundColor(.white)
-//                    ActivityIndicator(isAnimating: .constant(true), style: .large)
-                }
-            }
-            .zIndex(1)
-            .statusBar(hidden: true)
-            .edgesIgnoringSafeArea(.all)
-            .transition(.asymmetric(insertion: .move(edge: .bottom),
-                                    removal: .opacity))
-        }
     }
     
     var datePicker: some View {
@@ -181,72 +139,6 @@ struct DiaryView: View {
         }
     }
     
-    @ViewBuilder
-    func meter(placeholderColor: Color,
-               fillColor: Color,
-               value: CGFloat) -> some View
-    {
-        GeometryReader { proxy -> AnyView in
-            let type = PercentageType(value)
-            
-            let color: Color
-            let extraColor: Color
-            switch type {
-            case .empty:
-                color = Color("StatsEmptyFill")
-                extraColor = Color("StatsEmptyFill")
-            case .regular:
-                color = fillColor
-                extraColor = placeholderColor
-            case .complete:
-                color = Color("StatsCompleteFill")
-                extraColor = Color("StatsCompleteFillExtra")
-            case .excess:
-                color = Color("StatsExcessFill")
-                extraColor = Color("StatsExcessFillExtra")
-            }
-            
-            let percentage: Double
-            if value < 0 {
-                percentage = 0
-//            } else if value <= PercentageType.cutoff {
-//                percentage = PercentageType.cutoffcutoff
-            } else if value > 1 {
-                percentage = 1.0/value
-            } else {
-                percentage = value
-            }
-            
-            return AnyView(
-                ZStack(alignment: .leading) {
-                    Capsule()
-                        .fill(extraColor.gradient)
-                    Capsule()
-                        .fill(color.gradient)
-                        .frame(width: proxy.size.width * percentage)
-                }
-                .clipShape(
-                    Capsule()
-                )
-            )
-        }
-    }
-    
-    var goalButton: some View {
-        Button {
-            Haptics.feedback(style: .soft)
-            showingGoalPicker = true
-        } label: {
-            Image(systemName: "target")
-        }
-        .sheet(isPresented: $showingGoalPicker) {
-            NavigationView {
-                DiaryGoalsView()
-            }
-            .presentationDetents([.medium, .large])
-        }
-    }
-
     var listViewButton: some View {
         Button {
             let generator = UINotificationFeedbackGenerator()
@@ -289,20 +181,6 @@ struct DiaryView: View {
                 controller.showingSettings = true
             } label: {
                 Label("Settings", systemImage: "gear")
-            }
-            
-            Divider()
-            
-            Button {
-//                Store.writeBackup()
-            } label: {
-                Label("Backup", systemImage: "arrow.down.doc")
-            }
-            
-            Button {
-                controller.showingRestoreFilePicker = true
-            } label: {
-                Label("Restore", systemImage: "arrow.up.doc")
             }
 
         } label: {
