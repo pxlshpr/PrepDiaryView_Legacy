@@ -4,8 +4,6 @@ import PrepDataTypes
 
 extension MealView {
     struct Footer: View {
-        @EnvironmentObject var diaryController: DiaryController
-        
         //TODO: CoreData
 //        @ObservedObject var meal: Meal
         var meal: Meal
@@ -62,12 +60,12 @@ extension MealView.Footer {
     
     //MARK: - Actions
     func tappedAddFood() {
+        //TODO: Callback for this
         Haptics.feedback(style: .soft)
-        diaryController.mealToAddFoodTo = meal
     }
     
     func tappedEnergy() {
+        //TODO: Callback for this
         Haptics.feedback(style: .soft)
-        diaryController.mealToShowChartsFor = meal
     }
 }

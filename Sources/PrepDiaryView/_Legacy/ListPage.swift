@@ -7,9 +7,6 @@ public typealias GetMealsHandler = ((Date) async throws -> [Meal])
 
 struct ListPage: View {
     
-    @Environment(\.managedObjectContext) private var viewContext
-    @EnvironmentObject var diaryController: DiaryController
-    
     @State var meals: [Meal] = []
     
     var date: Date
@@ -43,7 +40,6 @@ struct ListPage: View {
                     meal: meal,
                     namespace: namespace
                 )
-                .environmentObject(diaryController)
             }
             if !meals.isEmpty {
                 Spacer().frame(height: 20)

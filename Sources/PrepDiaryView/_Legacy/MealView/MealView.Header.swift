@@ -5,7 +5,6 @@ import SwiftUISugar
 extension MealView {
     struct Header: View {
         @Environment(\.colorScheme) var colorScheme
-        @EnvironmentObject var diaryController: DiaryController
         @ObservedObject var viewModel: ViewModel
         
         let namespace: Namespace.ID
@@ -110,14 +109,12 @@ extension MealView.Header {
     
     func tappedEditMeal() {
         //TODO: Preset Edit Meal
-//        diaryController.mealToEdit = viewModel.meal
         Haptics.feedback(style: .light)
     }
     
     func tappedAddFood() {
         Haptics.feedback(style: .light)
         //TODO: Present Meal
-//        diaryController.mealToAddFoodTo = viewModel.meal
     }
     
     func tappedDeleteMeal() {

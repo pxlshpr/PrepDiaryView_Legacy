@@ -4,7 +4,6 @@ import PrepDataTypes
 public struct DiaryView<ActionButton: View, MenuButton: View, BottomCenterView: View>: View {
 //public struct DiaryView: View {
 
-    @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.colorScheme) var colorScheme
     
     @StateObject var controller: DiaryController
