@@ -5,7 +5,7 @@ extension Summary {
         
         weak var delegate: DiaryViewSummaryDelegate?
         
-        @Published var diaryPagerController: DiaryPager.Controller
+        @Published var diaryPagerController: DiaryPagerController
 
 //        @Published var gaugesGridRowViewModels: [GaugesGrid.Row.ViewModel] = []
 
@@ -16,7 +16,7 @@ extension Summary {
         //TODO: Replace with actual values
         @Published var haveGoal: Bool = true
         
-        init(diaryPagerController: DiaryPager.Controller, delegate: DiaryViewSummaryDelegate? = nil) {
+        init(diaryPagerController: DiaryPagerController, delegate: DiaryViewSummaryDelegate? = nil) {
             self.diaryPagerController = diaryPagerController
             self.delegate = delegate
         }

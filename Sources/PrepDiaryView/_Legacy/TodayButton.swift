@@ -2,7 +2,7 @@ import SwiftUI
 
 struct TodayButton: View {
     
-    @EnvironmentObject var diaryPagerController: DiaryPager.Controller
+    @EnvironmentObject var diaryPagerController: DiaryPagerController
     @State var currentDate: Date = Date()
     
     let diaryWillChangeDate = NotificationCenter.default.publisher(for: .diaryWillChangeDate)

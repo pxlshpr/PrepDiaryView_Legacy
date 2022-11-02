@@ -15,7 +15,7 @@ let package = Package(
             targets: ["PrepDiaryView"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/pxlshpr/PrepDataTypes", from: "0.0.72"),
+        .package(url: "https://github.com/pxlshpr/PrepDataTypes", from: "0.0.76"),
         .package(url: "https://github.com/pxlshpr/PrepViews", from: "0.0.8"),
         .package(url: "https://github.com/pxlshpr/NamePicker", from: "0.0.19"),
         .package(url: "https://github.com/pxlshpr/SwiftUICamera", from: "0.0.35"),

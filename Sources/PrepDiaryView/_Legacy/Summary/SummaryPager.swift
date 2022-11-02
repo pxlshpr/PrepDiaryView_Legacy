@@ -3,7 +3,7 @@ import SwiftUIPager
 
 struct SummaryPager: View {
     @EnvironmentObject var summaryController: Summary.Controller
-    @ObservedObject var diaryPagerController: DiaryPager.Controller
+    @ObservedObject var diaryPagerController: DiaryPagerController
 //        @EnvironmentObject var controller: Controller
     
 //        @Environment(\.managedObjectContext) private var viewContext

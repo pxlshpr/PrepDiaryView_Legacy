@@ -10,7 +10,7 @@ class DiaryController: ObservableObject {
         static let timeSettings: PresentationDetent = .height(450)
     }
     
-    let pagerController: DiaryPager.Controller
+    let pagerController: DiaryPagerController
     
     @Published var mealToAddFoodTo: Meal? = nil
     @Published var mealToEdit: Meal? = nil
@@ -37,7 +37,7 @@ class DiaryController: ObservableObject {
     
     var restoreFilePickDate: Date = Date()
 
-    init(pagerController: DiaryPager.Controller) {
+    init(pagerController: DiaryPagerController) {
         self.pagerController = pagerController
         addNotificationObservers()
     }

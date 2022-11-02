@@ -3,23 +3,21 @@ import SwiftUIPager
 import SwiftHaptics
 import PrepDataTypes
 
-extension DiaryPager {
-    class Controller: ObservableObject {
-        @Published var currentDate: Date = Date()
-        @Published var page: Page = .withIndex(1)
-        @Published var dayIndices = [-1, 0, 1]
-        @Published var isTransitioning = false
-        
-        //TODO: CoreData
-        @Published var currentDay: Day? = nil
+class DiaryPagerController: ObservableObject {
+    @Published var currentDate: Date = Date()
+    @Published var page: Page = .withIndex(1)
+    @Published var dayIndices = [-1, 0, 1]
+    @Published var isTransitioning = false
+    
+    //TODO: CoreData
+    @Published var currentDay: Day? = nil
 
-        init() {
-            addNotificationObservers()
-        }
+    init() {
+        addNotificationObservers()
     }
 }
 
-extension DiaryPager.Controller {
+extension DiaryPagerController {
     func refreshAfterBackupRestoration() {
         /// Refresh the Pager by moving back 5 days and coming back to the current date
         let currentDate = currentDate
@@ -30,7 +28,7 @@ extension DiaryPager.Controller {
     }
 }
 
-extension DiaryPager.Controller {
+extension DiaryPagerController {
     var currentDateIsToday: Bool {
         currentDate.startOfDay == Date().startOfDay
     }

@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pxlshpr/NamePicker",
       "state" : {
-        "revision" : "232b96beb2a2321c566bbeea88dbc0a68a8ec74a",
-        "version" : "0.0.18"
+        "revision" : "cc30a82f6b9b5090b08e8025227819ec900bc2d8",
+        "version" : "0.0.19"
       }
     },
     {
@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pxlshpr/PrepDataTypes",
       "state" : {
-        "revision" : "9d627b207c1702551445723dd60f03ca10970979",
-        "version" : "0.0.49"
+        "revision" : "520004e658e715cf90f99687721bfcb700560bfb",
+        "version" : "0.0.76"
       }
     },
     {
@@ -50,8 +50,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pxlshpr/SwiftSugar",
       "state" : {
-        "revision" : "8f6e2615bee4969dd629c09cae9d900b52081b02",
-        "version" : "0.0.74"
+        "revision" : "8215ef9562438698a24e17bb70cb5cb43eabc61a",
+        "version" : "0.0.77"
+      }
+    },
+    {
+      "identity" : "swiftuicamera",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pxlshpr/SwiftUICamera",
+      "state" : {
+        "revision" : "dae4323f90b8f1fce72e35e12ac67eb6ac1b0226",
+        "version" : "0.0.35"
       }
     },
     {
@@ -68,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pxlshpr/SwiftUISugar",
       "state" : {
-        "revision" : "e5d7c119378d25b85eb065e85839d9eb5b90e7f9",
-        "version" : "0.0.209"
+        "revision" : "f03a0f7e5870c576403d8cdfd5ffe2abd83d8698",
+        "version" : "0.0.210"
       }
     },
     {
@@ -77,8 +86,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pxlshpr/Timeline",
       "state" : {
-        "revision" : "5035d68cd74542572af670316690f378becd9bee",
-        "version" : "0.0.45"
+        "revision" : "8a95101f42892df9f27bda25003fd9b0df23b463",
+        "version" : "0.0.55"
+      }
+    },
+    {
+      "identity" : "visionsugar",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pxlshpr/VisionSugar",
+      "state" : {
+        "revision" : "d48e9bae9dc8bf7e3b75f39624318c0474c34dd9",
+        "version" : "0.0.74"
       }
     }
   ],

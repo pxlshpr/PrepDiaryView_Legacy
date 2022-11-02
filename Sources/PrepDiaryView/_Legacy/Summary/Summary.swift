@@ -5,7 +5,7 @@ import PrepDataTypes
 
 struct Summary: View {
     
-    @ObservedObject var diaryPagerController: DiaryPager.Controller
+    @ObservedObject var diaryPagerController: DiaryPagerController
     //TODO: CoreData
 //        @ObservedObject var day: Day
     var day: Day
@@ -19,7 +19,7 @@ struct Summary: View {
     let diarySummaryDetentChangedToMedium = NotificationCenter.default.publisher(for: .diarySummaryDetentChangedToMedium)
 
     //TODO: Why are we loading 'day' here? Find a cleaner way of doing this
-    init(diaryPagerController: DiaryPager.Controller, day: Day, delegate: DiaryViewSummaryDelegate? = nil) {
+    init(diaryPagerController: DiaryPagerController, day: Day, delegate: DiaryViewSummaryDelegate? = nil) {
         self.diaryPagerController = diaryPagerController
         self.day = day
         _controller = StateObject(
@@ -40,7 +40,8 @@ struct Summary: View {
                 .navigationDestination(for: Route.self) { route in
                     switch route {
                     case let .meal(meal):
-                        MealView.Summary(meal: meal)
+                        Text("MealView goes here")
+//                        MealView.Summary(meal: meal)
 //                    case let .foodItem(foodItem):
 //                        Text("Food Item")
                     case .foodItem:

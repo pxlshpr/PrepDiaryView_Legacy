@@ -1,13 +1,13 @@
 import SwiftUI
 import PrepDataTypes
 
-public struct DiaryView<ActionButton: View, MenuButton: View, BottomCenterView: View>: View {
+public struct DiaryView<PageContent: View, ActionButton: View, MenuButton: View, BottomCenterView: View>: View {
 //public struct DiaryView: View {
 
     @Environment(\.colorScheme) var colorScheme
     
     @StateObject var controller: DiaryController
-    @StateObject var pagerController: DiaryPager.Controller
+    @StateObject var pagerController: DiaryPagerController
     
     @State private var showingGoalPicker = false
     @State private var showingAddMenu = false
@@ -19,8 +19,10 @@ public struct DiaryView<ActionButton: View, MenuButton: View, BottomCenterView: 
 
     let getMealsHandler: GetMealsHandler
     let tappedAddMealsHandler: EmptyHandler
+    @ViewBuilder let pageContentBuilder: (Date) -> PageContent
     
     public init(
+        @ViewBuilder pageContentBuilder: @escaping (Date) -> PageContent,
         getMealsHandler: @escaping GetMealsHandler,
         tappedAddMealsHandler: @escaping EmptyHandler,
         actionButton: ActionButton,
@@ -33,7 +35,9 @@ public struct DiaryView<ActionButton: View, MenuButton: View, BottomCenterView: 
         self.menuButton = menuButton
         self.bottomCenterView = bottomCenterView
         
-        let pagerController = DiaryPager.Controller()
+        self.pageContentBuilder = pageContentBuilder
+        
+        let pagerController = DiaryPagerController()
         _pagerController = StateObject(wrappedValue: pagerController)
         _controller = StateObject(wrappedValue: DiaryController(pagerController: pagerController))
     }
@@ -71,6 +75,7 @@ public struct DiaryView<ActionButton: View, MenuButton: View, BottomCenterView: 
     
     var pager: some View {
         DiaryPager(
+            pageContentBuilder: pageContentBuilder,
             getMealsHandler: getMealsHandler,
             tapAddMealHandler: tappedAddMealsHandler
         )
