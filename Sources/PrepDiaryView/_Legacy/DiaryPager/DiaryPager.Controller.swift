@@ -11,32 +11,47 @@ class DiaryPagerController: ObservableObject {
     
     //TODO: CoreData
     @Published var currentDay: Day? = nil
+    
+    let didPageForwards: EmptyHandler?
+    let didPageBackwards: EmptyHandler?
+    let willMoveToDate: ((Date, Int) -> ())?
 
-    init() {
-        addNotificationObservers()
+    init(
+        didPageForwards: EmptyHandler? = nil,
+        didPageBackwards: EmptyHandler? = nil,
+        willMoveToDate: ((Date, Int) -> ())? = nil
+    ) {
+        self.didPageForwards = didPageForwards
+        self.didPageBackwards = didPageBackwards
+        self.willMoveToDate = willMoveToDate
     }
-}
-
-extension DiaryPagerController {
-    func refreshAfterBackupRestoration() {
-        /// Refresh the Pager by moving back 5 days and coming back to the current date
-        let currentDate = currentDate
-        changeDate(to: currentDate.moveDayBy(-5))
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.changeDate(to: currentDate)
-        }
+    
+    deinit {
+        print("We here")
     }
-}
 
-extension DiaryPagerController {
     var currentDateIsToday: Bool {
         currentDate.startOfDay == Date().startOfDay
     }
+
+    func position(of dayIndex: Int) -> Int {
+        dayIndices.firstIndex(of: dayIndex)!
+    }
     
     func addNotificationObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleDateChange), name: .didPickDateOnDayView, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleDateChange), name: .dayPagerWillChangeDate, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleDateChange), name: .weekPagerWillChangeDate, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didPickDateOnDayView), name: .didPickDateOnDayView, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(dayPagerWillChangeDate), name: .dayPagerWillChangeDate, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(weekPagerWillChangeDate), name: .weekPagerWillChangeDate, object: nil)
+    }
+    
+    @objc func didPickDateOnDayView(notification: Notification) {
+        handleDateChange(notification: notification)
+    }
+    @objc func dayPagerWillChangeDate(notification: Notification) {
+        handleDateChange(notification: notification)
+    }
+    @objc func weekPagerWillChangeDate(notification: Notification) {
+        handleDateChange(notification: notification)
     }
 
     @objc func handleDateChange(notification: Notification) {
@@ -78,6 +93,7 @@ extension DiaryPagerController {
         dayIndices.removeFirst()
         page.update(.previous)
         isTransitioning = false
+        didPageForwards?()
     }
     
     func slideWindowBackward() {
@@ -86,6 +102,7 @@ extension DiaryPagerController {
         dayIndices.removeLast()
         page.update(.next)
         isTransitioning = false
+        didPageBackwards?()
     }
     
     func dateChanged(to newDate: Date) {
@@ -134,7 +151,6 @@ extension DiaryPagerController {
     }
     
     //MARK: - Helpers
-    
     func changeDate(to newDate: Date) {
         guard newDate.startOfDay != dateForDayIndex(dayIndices[page.index]).startOfDay else { return }
         
@@ -151,6 +167,8 @@ extension DiaryPagerController {
         }
         
         let newDayIndex = newDate.numberOfDaysFrom(Date())
+        print("✨ Will move by \(newDateDelta) days to \(newDate.calendarDayString)")
+        
         if newDate > currentDate {
             /// first append that date to the end of the array
             dayIndices.append(newDayIndex)

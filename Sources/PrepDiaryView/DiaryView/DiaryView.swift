@@ -6,7 +6,7 @@ public struct DiaryView<PageContent: View>: View {
     @StateObject var controller: DiaryController
     @StateObject var pagerController: DiaryPagerController
     
-    @ViewBuilder let pageContentBuilder: (Date, Int) -> PageContent
+    @ViewBuilder let pageContentBuilder: (Date, Int, Int) -> PageContent
     
     @Binding var currentDate: Date
     
@@ -14,12 +14,19 @@ public struct DiaryView<PageContent: View>: View {
     
     public init(
         currentDate: Binding<Date>,
-        @ViewBuilder pageContentBuilder: @escaping (Date, Int) -> PageContent
+        didPageForwads: EmptyHandler? = nil,
+        didPageBackwards: EmptyHandler? = nil,
+        willMoveToDate: ((Date, Int) -> ())? = nil,
+        @ViewBuilder pageContentBuilder: @escaping (Date, Int, Int) -> PageContent
     ) {
         _currentDate = currentDate
         self.pageContentBuilder = pageContentBuilder
         
-        let pagerController = DiaryPagerController()
+        let pagerController = DiaryPagerController(
+            didPageForwards: didPageForwads,
+            didPageBackwards: didPageBackwards,
+            willMoveToDate: willMoveToDate
+        )
         _pagerController = StateObject(wrappedValue: pagerController)
         _controller = StateObject(wrappedValue: DiaryController(pagerController: pagerController))
     }
@@ -51,10 +58,10 @@ public struct DiaryView<PageContent: View>: View {
                 showingDatePicker = true
             },
             willChangeDate: { date in
-                print("willChangeDate(to: \(date)")
+//                print("willChangeDate(to: \(date)")
             },
             didChangeDate: { date in
-                print("didChangeDate(to: \(date)")
+//                print("didChangeDate(to: \(date)")
             }
         )
     }
