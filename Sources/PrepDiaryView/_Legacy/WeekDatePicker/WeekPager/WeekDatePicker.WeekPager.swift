@@ -3,10 +3,25 @@ import SwiftUIPager
 
 extension WeekDatePicker {
     struct WeekPager: View {
+                
+        let didChangeDate: ((Date) -> ())?
+
         @StateObject var controller: Controller
         
-        init(delegate: WeekDatePickerDelegate? = nil) {
-            _controller = StateObject(wrappedValue: Controller(delegate: delegate))
+        init(
+            didTapDayButton: @escaping () -> (),
+            willChangeDate: ((Date) -> ())? = nil,
+            didChangeDate: ((Date) -> ())? = nil
+        ) {
+            self.didChangeDate = didChangeDate
+            
+            let controller = Controller(
+                didTapDayButton: didTapDayButton,
+                willChangeDate: willChangeDate,
+                didChangeDate: didChangeDate
+            )
+            
+            _controller = StateObject(wrappedValue: controller)
         }
     }
 }
@@ -32,7 +47,7 @@ extension WeekDatePicker.WeekPager {
                 Button {
                     let userInfo: [String: Any] = [Notification.Keys.date: date]
                     NotificationCenter.default.post(name: .weekPagerWillChangeDate, object: nil, userInfo: userInfo)
-                    controller.delegate?.didChangeDate(to: date)
+                    didChangeDate?(date)
                 } label: {
                     Text(date.dayString)
                         .frame(maxWidth: .infinity)

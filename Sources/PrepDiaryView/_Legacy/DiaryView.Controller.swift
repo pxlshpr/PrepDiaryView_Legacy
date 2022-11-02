@@ -18,7 +18,6 @@ class DiaryController: ObservableObject {
     @Published var mealToShowChartsFor: Meal? = nil
     @Published var dayToShowChartsFor: Day? = nil
 
-    @Published var showingDatePicker = false
     @Published var showingSettings = false
 
     @Published var isListView = true
@@ -66,21 +65,6 @@ extension DiaryController {
     var listImageName: String {
 //        "list.bullet.rectangle"
         "checklist"
-    }
-}
-
-extension DiaryController: WeekDatePickerDelegate {
-    func didTapDayButton() {
-        Haptics.feedback(style: .rigid)
-        showingDatePicker = true
-    }
-    
-    func willChangeDate(to newDate: Date) {
-        print("willChangeDate(to: \(newDate)")
-    }
-    
-    func didChangeDate(to newDate: Date) {
-        print("didChangeDate(to: \(newDate)")
     }
 }
 

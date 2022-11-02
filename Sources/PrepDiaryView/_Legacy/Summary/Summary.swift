@@ -114,8 +114,9 @@ struct Summary: View {
     }
     
     var todayButton: some View {
-        TodayButton()
-            .environmentObject(diaryPagerController)
+        Text("Today Button")
+//        TodayButton()
+//            .environmentObject(diaryPagerController)
     }
     
     var calendarButton: some View {
@@ -165,7 +166,14 @@ struct Summary: View {
     
     
     var datePicker: some View {
-        WeekDatePicker()
+        WeekDatePicker(
+            didTapDayButton: {
+            },
+            willChangeDate: { date in
+            },
+            didChangeDate: { date in
+            }
+        )
     }
     
     var macroBreakdown: some View {

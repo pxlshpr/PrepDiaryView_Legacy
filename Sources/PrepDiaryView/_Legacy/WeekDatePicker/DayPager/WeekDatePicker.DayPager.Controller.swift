@@ -11,10 +11,10 @@ extension WeekDatePicker.DayPager {
         @Published var indices = [-1, 0, 1]
         @Published var isTransitioning = false
 
-        weak var delegate: WeekDatePickerDelegate?
-
-        init(delegate: WeekDatePickerDelegate? = nil) {
-            self.delegate = delegate
+        let willChangeDate: ((Date) -> ())?
+        
+        init(willChangeDate: ((Date) -> ())? = nil) {
+            self.willChangeDate = willChangeDate
             addNotificationObservers()
         }
     }
@@ -52,7 +52,7 @@ extension WeekDatePicker.DayPager.Controller {
 
         let userInfo = [Notification.Keys.date: newDate]
         NotificationCenter.default.post(name: .dayPagerWillChangeDate, object: nil, userInfo: userInfo)
-        delegate?.willChangeDate(to: newDate)
+        willChangeDate?(newDate)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.currentDate = newDate

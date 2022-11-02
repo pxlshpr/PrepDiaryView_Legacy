@@ -4,10 +4,17 @@ import SwiftSugar
 
 extension WeekDatePicker {
     struct DayPager: View {
-        @StateObject var controller = Controller()
+        @StateObject var controller: Controller
         
-        init(delegate: WeekDatePickerDelegate? = nil) {
-            _controller = StateObject(wrappedValue: Controller(delegate: delegate))
+        let didTapDayButton: () -> ()
+        
+        init(
+            didTapDayButton: @escaping () -> (),
+            willChangeDate: ((Date) -> ())? = nil
+        ) {
+            self.didTapDayButton = didTapDayButton
+            let controller = Controller(willChangeDate: willChangeDate)
+            _controller = StateObject(wrappedValue: controller)
         }
     }
 }
@@ -38,7 +45,7 @@ extension WeekDatePicker.DayPager {
         Button {
             //TODO: DatePicker
 //            diaryController.showingDatePicker = true
-            controller.delegate?.didTapDayButton()
+            didTapDayButton()
         } label: {
             controller.dateForDayIndex(index).longDateText()
                 .padding(.bottom)

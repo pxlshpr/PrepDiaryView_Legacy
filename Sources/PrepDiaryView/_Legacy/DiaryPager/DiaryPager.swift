@@ -10,8 +10,6 @@ struct DiaryPager<PageContent: View>: View {
     @EnvironmentObject var diaryController: DiaryController
     
     @ViewBuilder let pageContentBuilder: (Date) -> PageContent
-    let getMealsHandler: GetMealsHandler
-    let tapAddMealHandler: EmptyHandler
 
     var body: some View {
         Pager(

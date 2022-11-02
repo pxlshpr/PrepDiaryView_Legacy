@@ -10,10 +10,19 @@ extension WeekDatePicker.WeekPager {
         @Published var indices = [-1, 0, 1]
         @Published var isTransitioning = false
         
-        weak var delegate: WeekDatePickerDelegate?
+        let didTapDayButton: () -> ()
+        let willChangeDate: ((Date) -> ())?
+        let didChangeDate: ((Date) -> ())?
 
-        init(delegate: WeekDatePickerDelegate? = nil) {
-            self.delegate = delegate
+        init(
+            didTapDayButton: @escaping () -> (),
+            willChangeDate: ((Date) -> ())? = nil,
+            didChangeDate: ((Date) -> ())? = nil
+        ) {
+            self.didTapDayButton = didTapDayButton
+            self.willChangeDate = willChangeDate
+            self.didChangeDate = didChangeDate
+            
             addNotificationObservers()
         }
     }
@@ -59,7 +68,7 @@ extension WeekDatePicker.WeekPager.Controller {
             Notification.Keys.sender: self
         ]
         NotificationCenter.default.post(name: .weekPagerWillChangeDate, object: nil, userInfo: userInfo)
-        delegate?.didChangeDate(to: newDate)
+        didChangeDate?(newDate)
         
         highlightedDate = newDate
         currentDate = newDate
