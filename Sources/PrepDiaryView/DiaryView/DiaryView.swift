@@ -1,4 +1,5 @@
 import SwiftUI
+import PrepDataTypes
 
 public struct DiaryView<ActionButton: View, MenuButton: View, BottomCenterView: View>: View {
 //public struct DiaryView: View {
@@ -17,13 +18,18 @@ public struct DiaryView<ActionButton: View, MenuButton: View, BottomCenterView: 
     let menuButton: MenuButton
     let bottomCenterView: BottomCenterView
 
+    let getMealsHandler: GetMealsHandler
+    let tappedAddMealsHandler: EmptyHandler
+    
     public init(
+        getMealsHandler: @escaping GetMealsHandler,
+        tappedAddMealsHandler: @escaping EmptyHandler,
         actionButton: ActionButton,
         menuButton: MenuButton,
         bottomCenterView: BottomCenterView
     ) {
-//    public init() {
-        
+        self.getMealsHandler = getMealsHandler
+        self.tappedAddMealsHandler = tappedAddMealsHandler
         self.actionButton = actionButton
         self.menuButton = menuButton
         self.bottomCenterView = bottomCenterView
@@ -65,7 +71,10 @@ public struct DiaryView<ActionButton: View, MenuButton: View, BottomCenterView: 
     }
     
     var pager: some View {
-        DiaryPager()
+        DiaryPager(
+            getMealsHandler: getMealsHandler,
+            tapAddMealHandler: tappedAddMealsHandler
+        )
             .environmentObject(controller)
             .environmentObject(pagerController)
             .onChange(of: pagerController.currentDate) { newValue in

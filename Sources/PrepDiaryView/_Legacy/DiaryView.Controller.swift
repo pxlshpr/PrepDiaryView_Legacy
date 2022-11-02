@@ -19,7 +19,6 @@ class DiaryController: ObservableObject {
     @Published var dayToShowChartsFor: Day? = nil
 
     @Published var showingDatePicker = false
-    @Published var showingAddMeal = false
     @Published var showingSettings = false
 
     @Published var isListView = true

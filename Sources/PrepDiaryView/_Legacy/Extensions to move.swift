@@ -56,7 +56,7 @@ extension Meal {
     }
     
     var timeString: String {
-        time.formatted(date: .omitted, time: .shortened).lowercased()
+        Date(timeIntervalSince1970: time).formatted(date: .omitted, time: .shortened).lowercased()
     }
     
 //    var timeDate: Date {

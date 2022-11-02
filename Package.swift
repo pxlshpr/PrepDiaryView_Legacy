@@ -15,14 +15,13 @@ let package = Package(
             targets: ["PrepDiaryView"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/pxlshpr/PrepDataTypes", from: "0.0.49"),
-        .package(url: "https://github.com/pxlshpr/PrepMealForm", from: "0.0.4"),
+        .package(url: "https://github.com/pxlshpr/PrepDataTypes", from: "0.0.72"),
         .package(url: "https://github.com/pxlshpr/PrepViews", from: "0.0.8"),
         .package(url: "https://github.com/pxlshpr/NamePicker", from: "0.0.19"),
         .package(url: "https://github.com/pxlshpr/SwiftUICamera", from: "0.0.35"),
         .package(url: "https://github.com/pxlshpr/SwiftUISugar", from: "0.0.210"),
         .package(url: "https://github.com/pxlshpr/SwiftHaptics", from: "0.1.3"),
-        .package(url: "https://github.com/pxlshpr/Timeline", from: "0.0.51"),
+        .package(url: "https://github.com/pxlshpr/Timeline", from: "0.0.55"),
         
         .package(url: "https://github.com/fermoya/SwiftUIPager", from: "2.5.0"),
    ],
@@ -34,7 +33,6 @@ let package = Package(
             dependencies: [
                 .product(name: "Camera", package: "swiftuicamera"),
                 .product(name: "PrepDataTypes", package: "prepdatatypes"),
-                .product(name: "PrepMealForm", package: "prepmealform"),
                 .product(name: "PrepViews", package: "prepviews"),
                 .product(name: "NamePicker", package: "namepicker"),
                 .product(name: "SwiftHaptics", package: "swifthaptics"),
