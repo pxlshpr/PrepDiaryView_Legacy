@@ -6,7 +6,7 @@ public struct DiaryView<PageContent: View>: View {
     @StateObject var controller: DiaryController
     @StateObject var pagerController: DiaryPagerController
     
-    @ViewBuilder let pageContentBuilder: (Date) -> PageContent
+    @ViewBuilder let pageContentBuilder: (Date, Int) -> PageContent
     
     @Binding var currentDate: Date
     
@@ -14,7 +14,7 @@ public struct DiaryView<PageContent: View>: View {
     
     public init(
         currentDate: Binding<Date>,
-        @ViewBuilder pageContentBuilder: @escaping (Date) -> PageContent
+        @ViewBuilder pageContentBuilder: @escaping (Date, Int) -> PageContent
     ) {
         _currentDate = currentDate
         self.pageContentBuilder = pageContentBuilder

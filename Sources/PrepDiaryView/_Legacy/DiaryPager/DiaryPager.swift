@@ -9,7 +9,7 @@ struct DiaryPager<PageContent: View>: View {
     @EnvironmentObject var controller: DiaryPagerController
     @EnvironmentObject var diaryController: DiaryController
     
-    @ViewBuilder let pageContentBuilder: (Date) -> PageContent
+    @ViewBuilder let pageContentBuilder: (Date, Int) -> PageContent
 
     var body: some View {
         Pager(
@@ -18,7 +18,7 @@ struct DiaryPager<PageContent: View>: View {
             id: \.self,
             content:
                 { dayIndex in
-                    pageContentBuilder(controller.dateForDayIndex(dayIndex))
+                    pageContentBuilder(controller.dateForDayIndex(dayIndex), dayIndex)
                 }
         )
         .sensitivity(.high)
