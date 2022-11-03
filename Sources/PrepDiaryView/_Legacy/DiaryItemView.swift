@@ -10,8 +10,10 @@ struct DiaryItemView: View {
     //TODO: CoreData
 //    @ObservedObject var item: FoodItem
     var item: FoodItem
-
-    let namespace: Namespace.ID
+    
+    @Namespace var localNamespace
+//    let namespace: Namespace.ID
+    var namespace: Binding<SwiftUI.Namespace.ID?>
 
     var body: some View {
         HStack {
@@ -55,7 +57,12 @@ struct DiaryItemView: View {
     var optionalEmojiText: some View {
         Text(item.food.emoji)
             .font(.body)
-            .matchedGeometryEffect(id: item.id.uuidString, in: namespace)
+            .if(namespace.wrappedValue != nil) { view in
+                view.matchedGeometryEffect(id: item.id.uuidString, in: namespace.wrappedValue!)
+            }
+            .if(namespace.wrappedValue == nil) { view in
+                view.matchedGeometryEffect(id: "\(item.id.uuidString)2", in: localNamespace)
+            }
     }
     
     var nameColor: Color {

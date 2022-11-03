@@ -15,21 +15,20 @@ class DiaryPagerController: ObservableObject {
     let didPageForwards: EmptyHandler?
     let didPageBackwards: EmptyHandler?
     let willMoveToDate: ((Date, Int) -> ())?
+    let didMoveToDate: ((Date, Int) -> ())?
 
     init(
         didPageForwards: EmptyHandler? = nil,
         didPageBackwards: EmptyHandler? = nil,
-        willMoveToDate: ((Date, Int) -> ())? = nil
+        willMoveToDate: ((Date, Int) -> ())? = nil,
+        didMoveToDate: ((Date, Int) -> ())? = nil
     ) {
         self.didPageForwards = didPageForwards
         self.didPageBackwards = didPageBackwards
         self.willMoveToDate = willMoveToDate
+        self.didMoveToDate = didMoveToDate
     }
     
-    deinit {
-        print("We here")
-    }
-
     var currentDateIsToday: Bool {
         currentDate.startOfDay == Date().startOfDay
     }
@@ -167,7 +166,7 @@ class DiaryPagerController: ObservableObject {
         }
         
         let newDayIndex = newDate.numberOfDaysFrom(Date())
-        print("✨ Will move by \(newDateDelta) days to \(newDate.calendarDayString)")
+        willMoveToDate?(newDate, newDateDelta)
         
         if newDate > currentDate {
             /// first append that date to the end of the array
@@ -190,6 +189,8 @@ class DiaryPagerController: ObservableObject {
                     
                     /// Reset the index back to 1 as we've changed the dayIndices array
                     self.page.update(.new(index: 1))
+                    
+                    self.didMoveToDate?(newDate, newDateDelta)
                 }
             }
         } else {
@@ -216,6 +217,8 @@ class DiaryPagerController: ObservableObject {
                     
                     /// Reset the index back to 1 as we've changed the dayIndices array
                     self.page.update(.new(index: 1))
+                    
+                    self.didMoveToDate?(newDate, newDateDelta)
                 }
             }
         }

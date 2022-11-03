@@ -37,7 +37,8 @@ extension Summary.PageView.MealBreakdownSection {
     }
     
     var sortedMeals: [Meal] {
-        day.meals.sorted(by: { $0.time < $1.time })
+        []
+//        day.meals.sorted(by: { $0.time < $1.time })
     }
     
     //TODO: Make this a separate view with the modal picker with search

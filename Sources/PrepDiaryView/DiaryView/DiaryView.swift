@@ -17,6 +17,7 @@ public struct DiaryView<PageContent: View>: View {
         didPageForwads: EmptyHandler? = nil,
         didPageBackwards: EmptyHandler? = nil,
         willMoveToDate: ((Date, Int) -> ())? = nil,
+        didMoveToDate: ((Date, Int) -> ())? = nil,
         @ViewBuilder pageContentBuilder: @escaping (Date, Int, Int) -> PageContent
     ) {
         _currentDate = currentDate
@@ -25,7 +26,8 @@ public struct DiaryView<PageContent: View>: View {
         let pagerController = DiaryPagerController(
             didPageForwards: didPageForwads,
             didPageBackwards: didPageBackwards,
-            willMoveToDate: willMoveToDate
+            willMoveToDate: willMoveToDate,
+            didMoveToDate: didMoveToDate
         )
         _pagerController = StateObject(wrappedValue: pagerController)
         _controller = StateObject(wrappedValue: DiaryController(pagerController: pagerController))

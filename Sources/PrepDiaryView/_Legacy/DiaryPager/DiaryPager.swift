@@ -5,7 +5,6 @@ import Timeline
 import PrepDataTypes
 
 struct DiaryPager<PageContent: View>: View {
-    @Namespace private var namespace
     @EnvironmentObject var controller: DiaryPagerController
     @EnvironmentObject var diaryController: DiaryController
     
