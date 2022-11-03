@@ -61,7 +61,8 @@ public struct DiaryView<PageContent: View>: View {
     
     var datePicker: some View {
         DatePickerView(date: pagerController.currentDate)
-            .presentationDetents([.medium, .large])
+            .presentationDetents([.medium])
+            .presentationDragIndicator(.hidden)
     }
     
     var weekDatePicker: some View {
