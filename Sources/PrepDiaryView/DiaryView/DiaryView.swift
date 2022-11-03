@@ -8,24 +8,29 @@ public struct DiaryView<PageContent: View>: View {
     
     @ViewBuilder let pageContentBuilder: (Date, Int, Int) -> PageContent
     
+    @Binding var setToToday: Bool
     @Binding var currentDate: Date
     
     @State var showingDatePicker = false
     
     public init(
         currentDate: Binding<Date>,
+        setToToday: Binding<Bool>,
         didPageForwads: EmptyHandler? = nil,
         didPageBackwards: EmptyHandler? = nil,
+        onChangePageOffset: ((Int) -> ())? = nil,
         willMoveToDate: ((Date, Int) -> ())? = nil,
         didMoveToDate: ((Date, Int) -> ())? = nil,
         @ViewBuilder pageContentBuilder: @escaping (Date, Int, Int) -> PageContent
     ) {
+        _setToToday = setToToday
         _currentDate = currentDate
         self.pageContentBuilder = pageContentBuilder
         
         let pagerController = DiaryPagerController(
             didPageForwards: didPageForwads,
             didPageBackwards: didPageBackwards,
+            onChangePageOffset: onChangePageOffset,
             willMoveToDate: willMoveToDate,
             didMoveToDate: didMoveToDate
         )
@@ -37,6 +42,11 @@ public struct DiaryView<PageContent: View>: View {
         navigationView
             .onChange(of: pagerController.currentDate) { newValue in
                 currentDate = newValue
+            }
+            .onChange(of: setToToday) { newValue in
+                print("🎉🎉🎉 SET TO TODAY")
+                NotificationCenter.sendNotificationThatDiaryDateWillChange(to: Date().startOfDay)
+                pagerController.changeDate(to: Date().startOfDay)
             }
     }
     

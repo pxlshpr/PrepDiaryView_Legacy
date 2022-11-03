@@ -16,15 +16,18 @@ class DiaryPagerController: ObservableObject {
     let didPageBackwards: EmptyHandler?
     let willMoveToDate: ((Date, Int) -> ())?
     let didMoveToDate: ((Date, Int) -> ())?
-
+    let onChangePageOffset: ((Int) -> ())?
+    
     init(
         didPageForwards: EmptyHandler? = nil,
         didPageBackwards: EmptyHandler? = nil,
+        onChangePageOffset: ((Int) -> ())? = nil,
         willMoveToDate: ((Date, Int) -> ())? = nil,
         didMoveToDate: ((Date, Int) -> ())? = nil
     ) {
         self.didPageForwards = didPageForwards
         self.didPageBackwards = didPageBackwards
+        self.onChangePageOffset = onChangePageOffset
         self.willMoveToDate = willMoveToDate
         self.didMoveToDate = didMoveToDate
     }
@@ -166,12 +169,21 @@ class DiaryPagerController: ObservableObject {
         }
         
         let newDayIndex = newDate.numberOfDaysFrom(Date())
-        willMoveToDate?(newDate, newDateDelta)
         
         if newDate > currentDate {
+            
+            
             /// first append that date to the end of the array
             dayIndices.append(newDayIndex)
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                
+                /// Indicate that the pager index will be offset by the date delta
+                /// before carrying out the page action, so that the correct view is fetched
+//                self.onChangePageOffset?(newDateDelta + 1)
+
+                self.onChangePageOffset?(newDateDelta - 2)
+
                 withAnimation {
                     /// now move the index there (we’ll be traversing two pages forwards)
                     self.currentDate = newDate
@@ -180,6 +192,7 @@ class DiaryPagerController: ObservableObject {
                 
                 /// Once the transition animation completes
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    
                     /// Remove the first three pages (leaving us with only the current `newDayIndex` that we're on)
                     self.dayIndices.removeFirst(3)
                     
@@ -190,24 +203,37 @@ class DiaryPagerController: ObservableObject {
                     /// Reset the index back to 1 as we've changed the dayIndices array
                     self.page.update(.new(index: 1))
                     
+                    /// Let any interested parties know that the page action completed
                     self.didMoveToDate?(newDate, newDateDelta)
                 }
             }
         } else {
-            /// first insert that date to the start of the array
+            
+            /// Indicate that the pager index will be offset by 1 before inserting the extra index at the start
+            /// (so that the correct view is still fetched)
+            onChangePageOffset?(1)
+            
+            /// first insert that date at the start of the array
             dayIndices.insert(newDayIndex, at: 0)
             /// move the page index forward by 1 so that we're still pointing to the correct day before the animation occurs
             page.update(.next)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                
+                /// Indicate that the pager index will be offset by the date delta + 1
+                /// (to account for the extra element added at the start) before inserting the extra index at the start
+                /// before carrying out the page action, so that the correct view is fetched
+                self.onChangePageOffset?(newDateDelta + 1)
+                
                 withAnimation {
                     /// now move the index there (we’ll be traversing two pages backwards)
                     self.currentDate = newDate
                     self.page.update(.new(index: 0))
                 }
-                
+
                 /// Once the transition animation completes
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+
                     /// Remove the last three pages (leaving us with only the current `newDayIndex` that we're on)
                     self.dayIndices.removeLast(3)
                     
@@ -217,7 +243,8 @@ class DiaryPagerController: ObservableObject {
                     
                     /// Reset the index back to 1 as we've changed the dayIndices array
                     self.page.update(.new(index: 1))
-                    
+
+                    /// Let any interested parties know that the page action completed
                     self.didMoveToDate?(newDate, newDateDelta)
                 }
             }
