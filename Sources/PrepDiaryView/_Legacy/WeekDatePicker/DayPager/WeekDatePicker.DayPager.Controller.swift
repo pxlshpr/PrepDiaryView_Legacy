@@ -99,42 +99,36 @@ extension WeekDatePicker.DayPager.Controller {
     
     //MARK: - Pager Actions
     
-    /// **To be revisited: **
     /// Removed this due to it being inconsistent (seems like we're doubling up with DiaryPager)
     func tappedPreviousDay() {
-        /// Removed this due to it being inconsistent (seems like we're doubling up with DiaryPager)
-        return
-//        print("⚪️ 🗓 WeekDatePicker tappedPreviousDay()")
-//        guard !isTransitioning else { return }
-//
-//        withAnimation {
-//            isTransitioning = true
-//            page.update(.previous)
-//        }
-//        /// Let the animation complete first, so that we don't interrupt it
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//            self.currentDate = self.currentDate.moveDayBy(-1)
-//            self.slideWindowBackward()
-//        }
+        print("⚪️ 🗓 WeekDatePicker tappedPreviousDay()")
+        guard !isTransitioning else { return }
+
+        withAnimation {
+            isTransitioning = true
+            page.update(.previous)
+        }
+        /// Let the animation complete first, so that we don't interrupt it
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.currentDate = self.currentDate.moveDayBy(-1)
+            self.slideWindowBackward()
+        }
     }
     
-    /// **To be revisited: **
-    /// Removed this due to it being inconsistent (seems like we're doubling up with DiaryPager)
     func tappedNextDay() {
-        return
-//        print("⚪️ 🗓 WeekDatePicker tappedNextDay()")
-//        guard !isTransitioning else { return }
-//
-//        withAnimation {
-//            isTransitioning = true
-//            page.update(.next)
-//        }
-//
-//        /// Let the animation complete first, so that we don't interrupt it
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//            self.currentDate = self.currentDate.moveDayBy(1)
-//            self.slideWindowForward()
-//        }
+        print("⚪️ 🗓 WeekDatePicker tappedNextDay()")
+        guard !isTransitioning else { return }
+
+        withAnimation {
+            isTransitioning = true
+            page.update(.next)
+        }
+
+        /// Let the animation complete first, so that we don't interrupt it
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.currentDate = self.currentDate.moveDayBy(1)
+            self.slideWindowForward()
+        }
     }
     
     func changeDate(to newDate: Date) {
