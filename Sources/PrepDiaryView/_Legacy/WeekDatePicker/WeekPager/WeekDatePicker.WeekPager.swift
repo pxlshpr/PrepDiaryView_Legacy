@@ -56,6 +56,7 @@ extension WeekDatePicker.WeekPager {
                         .background(background(forDate: date))
                         .fontWeight(fontWeight(forDate: date))
                 }
+                .disabled(controller.isTransitioning)
             }
         }
     }

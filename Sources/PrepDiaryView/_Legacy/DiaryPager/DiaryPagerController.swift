@@ -119,30 +119,33 @@ class DiaryPagerController: ObservableObject {
     
     //MARK: - Direct Actions
     func tappedPreviousDay() {
+        print("⚪️ 📆 DiaryPager tappedPreviousDay()")
         guard !isTransitioning else { return }
-        
-        isTransitioning = true
-        
+
         withAnimation {
-            currentDate = currentDate.moveDayBy(-1)
+            isTransitioning = true
             page.update(.previous)
         }
+        
         /// Let the animation complete first, so that we don't interrupt it
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.currentDate = self.currentDate.moveDayBy(-1)
             self.slideWindowBackward()
         }
     }
     
     func tappedNextDay() {
+        print("⚪️ 📆 DiaryPager tappedNextDay()")
         guard !isTransitioning else { return }
-        
-        isTransitioning = true
+
         withAnimation {
-            currentDate = currentDate.moveDayBy(1)
+            isTransitioning = true
             page.update(.next)
         }
+        
         /// Let the animation complete first, so that we don't interrupt it
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.currentDate = self.currentDate.moveDayBy(1)
             self.slideWindowForward()
         }
     }
