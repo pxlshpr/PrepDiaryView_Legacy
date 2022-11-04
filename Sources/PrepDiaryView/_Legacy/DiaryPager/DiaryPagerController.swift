@@ -214,20 +214,22 @@ class DiaryPagerController: ObservableObject {
             
             /// Indicate that the pager index will be offset by 1 before inserting the extra index at the start
             /// (so that the correct view is still fetched)
-            onChangePageOffset?(1)
+            onChangePageOffset?(-1)
+            
             
             /// first insert that date at the start of the array
             dayIndices.insert(newDayIndex, at: 0)
+            
             /// move the page index forward by 1 so that we're still pointing to the correct day before the animation occurs
             page.update(.next)
-            
+
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                
+
                 /// Indicate that the pager index will be offset by the date delta + 1
                 /// (to account for the extra element added at the start) before inserting the extra index at the start
                 /// before carrying out the page action, so that the correct view is fetched
                 self.onChangePageOffset?(newDateDelta + 1)
-                
+
                 withAnimation {
                     /// now move the index there (we’ll be traversing two pages backwards)
                     self.currentDate = newDate
@@ -239,11 +241,11 @@ class DiaryPagerController: ObservableObject {
 
                     /// Remove the last three pages (leaving us with only the current `newDayIndex` that we're on)
                     self.dayIndices.removeLast(3)
-                    
+
                     /// Insert the true neighbours to the `dayIndices` array
                     self.dayIndices.insert(newDayIndex - 1, at: 0)
                     self.dayIndices.append(newDayIndex + 1)
-                    
+
                     /// Reset the index back to 1 as we've changed the dayIndices array
                     self.page.update(.new(index: 1))
 
