@@ -38,7 +38,7 @@ extension WeekDatePicker.DayPager {
         .interactive(opacity: 0.99)
         .onPageWillChange(controller.pageWillChange(to:))
         .onPageChanged(controller.pageChanged(to:)) //TODO: Remove this if it is not needed anymore
-        .frame(width: 280, height: 44) //TODO: Remove hardcoded values
+        .frame(width: 280, height: 27) //TODO: Remove hardcoded values
     }
     
     func dayButton(for index: Int) -> some View {
@@ -48,7 +48,7 @@ extension WeekDatePicker.DayPager {
             didTapDayButton()
         } label: {
             controller.dateForDayIndex(index).longDateText()
-                .padding(.bottom)
+                .padding(.bottom, 10)
         }
         .buttonStyle(.plain)
     }

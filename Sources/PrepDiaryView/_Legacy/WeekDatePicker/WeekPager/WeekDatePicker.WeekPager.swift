@@ -38,7 +38,7 @@ extension WeekDatePicker.WeekPager {
         .pagingPriority(.high)
         .onPageChanged(controller.pageChanged(to:))
 //        .onPageWillChange(controller.pageWillChange(to:))
-        .frame(height: 50) //TODO: Hardcoded Value
+        .frame(height: 45) //TODO: Hardcoded Value
     }
     
     func weekPage(for index: Int) -> some View {
