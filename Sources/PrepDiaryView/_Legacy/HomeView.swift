@@ -127,7 +127,7 @@
 //        Button {
 //            showSummary()
 //        } label: {
-//            FoodMeter(viewModel: foodMeterViewModel)
+//            NutrientMeter(viewModel: foodMeterViewModel)
 //            .frame(width: 250)
 //            .frame(maxHeight: .infinity)
 //            .contentShape(Rectangle())
