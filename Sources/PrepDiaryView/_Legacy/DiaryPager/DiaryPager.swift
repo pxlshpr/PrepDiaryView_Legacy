@@ -10,19 +10,26 @@ struct DiaryPager<PageContent: View>: View {
     
     @ViewBuilder let pageContentBuilder: (Date, Int, Int) -> PageContent
 
+    @State var color: Color = .yellow
+
     var body: some View {
+        pager
+    }
+    
+    func contentForDayIndex(_ dayIndex: Int) -> some View {
+        pageContentBuilder(
+            controller.dateForDayIndex(dayIndex),
+            dayIndex,
+            controller.position(of: dayIndex)
+        )
+    }
+    
+    var pager: some View {
         Pager(
             page: controller.page,
             data: controller.dayIndices,
             id: \.self,
-            content:
-                { dayIndex in
-                    pageContentBuilder(
-                        controller.dateForDayIndex(dayIndex),
-                        dayIndex,
-                        controller.position(of: dayIndex)
-                    )
-                }
+            content: contentForDayIndex
         )
         .sensitivity(.high)
         .pagingPriority(.high)
