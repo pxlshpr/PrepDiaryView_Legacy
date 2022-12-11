@@ -33,6 +33,11 @@ struct DiaryPager<PageContent: View>: View {
         )
         .sensitivity(.high)
         .pagingPriority(.high)
+        
+        .itemSpacing(10)
+        .interactive(rotation: true)
+        .interactive(scale: 0.7)
+        
         .onPageChanged(controller.pageChanged(to:))
         .onPageWillChange(controller.pageWillChange(to:))
         .onAppear {
