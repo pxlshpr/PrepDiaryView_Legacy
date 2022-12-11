@@ -78,6 +78,8 @@ class DiaryPagerController: ObservableObject {
     }
     
     func pageChanged(to newPageIndex: Int) {
+        Haptics.selectionFeedback()
+
 //        let userInfo = [Notification.Keys.date: dateForDayIndex(dayIndices[newPageIndex])]
 //        NotificationCenter.default.post(name: .diaryWillChangeDate, object: nil, userInfo: userInfo)
 
@@ -158,7 +160,9 @@ class DiaryPagerController: ObservableObject {
     //MARK: - Helpers
     func changeDate(to newDate: Date) {
         guard newDate.startOfDay != dateForDayIndex(dayIndices[page.index]).startOfDay else { return }
-        
+
+        Haptics.selectionFeedback()
+
         let newDateDelta = newDate.numberOfDaysFrom(currentDate)
         
         /// First filter out cases where we're changing to the next or previous day and call those handlers instead, as this is for day changes greater than 1 hop
