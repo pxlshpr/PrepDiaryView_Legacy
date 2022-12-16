@@ -53,6 +53,7 @@ public struct DiaryView<PageContent: View>: View {
     var navigationView: some View {
         VStack(spacing: 0) {
             weekDatePicker
+                .background(.thinMaterial)
             Divider()
             pager
         }
