@@ -44,7 +44,6 @@ public struct DiaryView<PageContent: View>: View {
                 currentDate = newValue
             }
             .onChange(of: setToToday) { newValue in
-                print("🎉🎉🎉 SET TO TODAY")
                 NotificationCenter.sendNotificationThatDiaryDateWillChange(to: Date().startOfDay)
                 pagerController.changeDate(to: Date().startOfDay)
             }
