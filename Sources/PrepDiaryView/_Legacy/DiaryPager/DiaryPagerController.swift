@@ -98,6 +98,7 @@ class DiaryPagerController: ObservableObject {
         page.update(.previous)
         isTransitioning = false
         didPageForwards?()
+        sendDateDidChangeNotification()
     }
     
     func slideWindowBackward() {
@@ -107,13 +108,11 @@ class DiaryPagerController: ObservableObject {
         page.update(.next)
         isTransitioning = false
         didPageBackwards?()
+        sendDateDidChangeNotification()
     }
     
-    func dateChanged(to newDate: Date) {
-        /// Fire the notification so that `StatsView` (and any other interested parties) are notified
-        let userInfo = [
-            Notification.Keys.date: newDate
-        ]
+    func sendDateDidChangeNotification() {
+        let userInfo = [Notification.Keys.date: currentDate]
         NotificationCenter.default.post(name: .dateDidChange,
                                         object: nil,
                                         userInfo: userInfo)
@@ -212,6 +211,7 @@ class DiaryPagerController: ObservableObject {
                     
                     /// Let any interested parties know that the page action completed
                     self.didMoveToDate?(newDate, newDateDelta)
+                    self.sendDateDidChangeNotification()
                 }
             }
         } else {
@@ -255,6 +255,7 @@ class DiaryPagerController: ObservableObject {
 
                     /// Let any interested parties know that the page action completed
                     self.didMoveToDate?(newDate, newDateDelta)
+                    self.sendDateDidChangeNotification()
                 }
             }
         }
