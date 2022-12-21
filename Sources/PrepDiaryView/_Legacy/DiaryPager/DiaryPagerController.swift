@@ -28,6 +28,7 @@ public class DiaryPagerController: ObservableObject {
     //TODO: CoreData
     @Published var currentDay: Day? = nil
     
+    
 //    var actionHandler: ((DiaryPagerAction) -> ())
     let delegate: DiaryPagerDelegate
     
@@ -66,7 +67,7 @@ public class DiaryPagerController: ObservableObject {
     @objc func handleDateChange(notification: Notification) {
         guard !isLocked else { return }
         isLocked = true
-        
+
         guard let userInfo = notification.userInfo,
               let date = userInfo[Notification.Keys.date] as? Date else {
             return
@@ -178,7 +179,16 @@ public class DiaryPagerController: ObservableObject {
     
     //MARK: - Helpers
     func changeDate(to newDate: Date) {
-        guard newDate.startOfDay != dateForDayIndex(dayIndices[page.index]).startOfDay else { return }
+        
+        guard !isLocked else { return }
+        isLocked = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.isLocked = false
+        }
+        
+        guard newDate.startOfDay != dateForDayIndex(dayIndices[page.index]).startOfDay else {
+            return
+        }
 
         Haptics.selectionFeedback()
 

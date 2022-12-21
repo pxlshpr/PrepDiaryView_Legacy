@@ -15,6 +15,8 @@ extension WeekDatePicker.WeekPager {
         let willChangeDate: ((Date) -> ())?
         let didChangeDate: ((Date) -> ())?
 
+        var isLocked: Bool = false
+
         init(
             currentDate: Date,
             didTapDayButton: @escaping () -> (),
@@ -43,6 +45,9 @@ extension WeekDatePicker.WeekPager.Controller {
     }
     
     @objc func handleDateChange(notification: Notification) {
+        guard !isLocked else { return }
+        isLocked = true
+
         guard let userInfo = notification.userInfo,
               let newDate = userInfo[Notification.Keys.date] as? Date else {
             return
@@ -59,6 +64,10 @@ extension WeekDatePicker.WeekPager.Controller {
             highlightedDate = newDate
         } else {
             changeWeek(toWeekContaining: newDate)
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.isLocked = false
         }
     }
     
