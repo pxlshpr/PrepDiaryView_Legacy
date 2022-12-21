@@ -54,48 +54,28 @@ public class DiaryPagerController: ObservableObject {
     var isLocked: Bool = false
 
     @objc func didPickDateOnDayView(notification: Notification) {
-        guard !isLocked else {
-            print("🔴 DiaryPagerController.didPickDateOnDayView()")
-            return
-        }
-        print("🔵 DiaryPagerController.didPickDateOnDayView()")
-        isLocked = true
         handleDateChange(notification: notification)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.isLocked = false
-        }
     }
     @objc func dayPagerWillChangeDate(notification: Notification) {
-        guard !isLocked else {
-            print("🔴 DiaryPagerController.dayPagerWillChangeDate()")
-            return
-        }
-        print("🔵 DiaryPagerController.dayPagerWillChangeDate()")
-        isLocked = true
         handleDateChange(notification: notification)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.isLocked = false
-        }
     }
     @objc func weekPagerWillChangeDate(notification: Notification) {
-        guard !isLocked else {
-            print("🔴 DiaryPagerController.weekPagerWillChangeDate()")
-            return
-        }
-        print("🔵 DiaryPagerController.weekPagerWillChangeDate()")
-        isLocked = true
         handleDateChange(notification: notification)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.isLocked = false
-        }
     }
 
     @objc func handleDateChange(notification: Notification) {
+        guard !isLocked else { return }
+        isLocked = true
+        
         guard let userInfo = notification.userInfo,
               let date = userInfo[Notification.Keys.date] as? Date else {
             return
         }
         changeDate(to: date)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.isLocked = false
+        }
     }
 
     func goToToday() {

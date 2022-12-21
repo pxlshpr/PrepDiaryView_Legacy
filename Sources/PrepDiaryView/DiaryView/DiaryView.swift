@@ -16,11 +16,14 @@ public struct DiaryView<PageContent: View>: View {
     
     @Binding var showingWeekPager: Bool
     
+    let includeDepthEffect: Bool
+    
     public init(
         currentDate: Binding<Date>,
         setToToday: Binding<Bool>,
         pagerController: DiaryPagerController,
         showingWeekPager: Binding<Bool>? = nil,
+        includeDepthEffect: Bool,
 //        pagerDelegate: DiaryPagerDelegate,
 //        actionHandler: @escaping ((DiaryPagerAction) -> ()),
         @ViewBuilder pageContentBuilder: @escaping (Date, Int, Int) -> PageContent
@@ -42,6 +45,8 @@ public struct DiaryView<PageContent: View>: View {
         } else {
             _showingWeekPager = .constant(true)
         }
+        
+        self.includeDepthEffect = includeDepthEffect
     }
     
     public var body: some View {
@@ -89,12 +94,15 @@ public struct DiaryView<PageContent: View>: View {
     }
 
     var pager: some View {
-        DiaryPager(pageContentBuilder: pageContentBuilder)
-            .environmentObject(controller)
-            .environmentObject(pagerController)
-            .onChange(of: pagerController.currentDate) { newValue in
-                //TODO: Send this as a notification if not doing so already and update meter
-//                updateMeter()
-            }
+        DiaryPager(
+            includeDepthEffect: includeDepthEffect,
+            pageContentBuilder: pageContentBuilder
+        )
+        .environmentObject(controller)
+        .environmentObject(pagerController)
+        .onChange(of: pagerController.currentDate) { newValue in
+            //TODO: Send this as a notification if not doing so already and update meter
+//            updateMeter()
+        }
     }
 }

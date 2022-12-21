@@ -13,6 +13,8 @@ extension WeekDatePicker.DayPager {
 
         let willChangeDate: ((Date) -> ())?
         
+        var isLocked: Bool = false
+
         init(willChangeDate: ((Date) -> ())? = nil) {
             self.willChangeDate = willChangeDate
             addNotificationObservers()
@@ -28,12 +30,19 @@ extension WeekDatePicker.DayPager.Controller {
     }
     
     @objc func handleDateChange(notification: Notification) {
+        guard !isLocked else { return }
+        isLocked = true
+        
         guard let userInfo = notification.userInfo,
               let date = userInfo[Notification.Keys.date] as? Date else {
             return
         }
         
         changeDate(to: date)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.isLocked = false
+        }
     }
 }
 
