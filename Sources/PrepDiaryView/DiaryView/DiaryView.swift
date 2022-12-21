@@ -14,10 +14,13 @@ public struct DiaryView<PageContent: View>: View {
     
     @State var showingDatePicker = false
     
+    @Binding var showingWeekPager: Bool
+    
     public init(
         currentDate: Binding<Date>,
         setToToday: Binding<Bool>,
         pagerController: DiaryPagerController,
+        showingWeekPager: Binding<Bool>? = nil,
 //        pagerDelegate: DiaryPagerDelegate,
 //        actionHandler: @escaping ((DiaryPagerAction) -> ()),
         @ViewBuilder pageContentBuilder: @escaping (Date, Int, Int) -> PageContent
@@ -33,6 +36,12 @@ public struct DiaryView<PageContent: View>: View {
         self.pagerController = pagerController
 
         _controller = StateObject(wrappedValue: DiaryController(pagerController: pagerController))
+        
+        if let showingWeekPager {
+            _showingWeekPager = showingWeekPager
+        } else {
+            _showingWeekPager = .constant(true)
+        }
     }
     
     public var body: some View {
@@ -48,9 +57,11 @@ public struct DiaryView<PageContent: View>: View {
     
     var navigationView: some View {
         VStack(spacing: 0) {
-            weekDatePicker
-                .background(.thinMaterial)
-            Divider()
+            if showingWeekPager {
+                weekDatePicker
+                    .background(.thinMaterial)
+                Divider()
+            }
             pager
         }
         .sheet(isPresented: $showingDatePicker) { datePicker }
@@ -64,6 +75,7 @@ public struct DiaryView<PageContent: View>: View {
     
     var weekDatePicker: some View {
         WeekDatePicker(
+            currentDate: pagerController.currentDate,
             didTapDayButton: {
                 showingDatePicker = true
             },

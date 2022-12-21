@@ -10,15 +10,18 @@ import SwiftUIPager
 struct WeekDatePicker: View {
     let weekdayStrings = ["M", "Tu", "W", "Th", "F", "Sa", "Su"]
     
+    let startingDate: Date
     let didTapDayButton: () -> ()
     let willChangeDate: ((Date) -> ())?
     let didChangeDate: ((Date) -> ())?
     
     init(
+        currentDate: Date,
         didTapDayButton: @escaping () -> Void,
         willChangeDate: ((Date) -> Void)? = nil,
         didChangeDate: ((Date) -> Void)? = nil
     ) {
+        self.startingDate = currentDate
         self.didTapDayButton = didTapDayButton
         self.willChangeDate = willChangeDate
         self.didChangeDate = didChangeDate
@@ -39,6 +42,7 @@ extension WeekDatePicker {
                     }
                 }
                 WeekPager(
+                    currentDate: startingDate,
                     didTapDayButton: didTapDayButton,
                     willChangeDate: willChangeDate,
                     didChangeDate: didChangeDate
@@ -76,7 +80,7 @@ struct DiaryDateView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             VStack(spacing: 0) {
-                WeekDatePicker {
+                WeekDatePicker(currentDate: Date()) {
                     
                 }
                 Spacer()

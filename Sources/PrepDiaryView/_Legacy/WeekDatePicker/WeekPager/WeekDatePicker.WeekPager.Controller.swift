@@ -4,8 +4,9 @@ import SwiftUIPager
 extension WeekDatePicker.WeekPager {
     class Controller: ObservableObject {
         
-        @Published var highlightedDate: Date = Date()
-        @Published var currentDate: Date = Date()
+        @Published var highlightedDate: Date
+        @Published var currentDate: Date
+        
         @Published var page: Page = .withIndex(1)
         @Published var indices = [-1, 0, 1]
         @Published var isTransitioning = false
@@ -15,10 +16,13 @@ extension WeekDatePicker.WeekPager {
         let didChangeDate: ((Date) -> ())?
 
         init(
+            currentDate: Date,
             didTapDayButton: @escaping () -> (),
             willChangeDate: ((Date) -> ())? = nil,
             didChangeDate: ((Date) -> ())? = nil
         ) {
+            self.currentDate = currentDate
+            self.highlightedDate = currentDate
             self.didTapDayButton = didTapDayButton
             self.willChangeDate = willChangeDate
             self.didChangeDate = didChangeDate

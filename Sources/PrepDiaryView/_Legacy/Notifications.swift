@@ -5,7 +5,7 @@
 //    static var weekPagerWillChangeDate: Notification.Name { return .init("weekPagerWillChangeDate") }
 //    static var weekPagerDidChangeDate: Notification.Name { return .init("weekPagerDidChangeDate") }
 //    
-//    static var diarySummaryDetentChangedToMedium: Notification.Name { return .init("diarySummaryDetentChangedToMedium") }
+//    static var summaryDetentCollapsed: Notification.Name { return .init("summaryDetentCollapsed") }
 //
 //    /// To move to PrepDataTypes
 //    static var dateDidChange: Notification.Name { return .init("dateDidChange") }

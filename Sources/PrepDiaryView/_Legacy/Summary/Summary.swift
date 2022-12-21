@@ -16,7 +16,7 @@ struct Summary: View {
     @State var showingDatePicker = false
     @State var hasAppeared = false
     
-    let diarySummaryDetentChangedToMedium = NotificationCenter.default.publisher(for: .diarySummaryDetentChangedToMedium)
+    let summaryDetentCollapsed = NotificationCenter.default.publisher(for: .summaryDetentCollapsed)
 
     //TODO: Why are we loading 'day' here? Find a cleaner way of doing this
     init(diaryPagerController: DiaryPagerController, day: Day, delegate: DiaryViewSummaryDelegate? = nil) {
@@ -52,7 +52,7 @@ struct Summary: View {
         .onChange(of: chartType) { newValue in
             Haptics.feedback(style: .soft)
         }
-        .onReceive(diarySummaryDetentChangedToMedium, perform: diarySummaryDetentChangedToMedium)
+        .onReceive(summaryDetentCollapsed, perform: summaryDetentCollapsed)
         .task {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 withAnimation {
@@ -97,7 +97,7 @@ struct Summary: View {
             .environmentObject(controller)
     }
     
-    func diarySummaryDetentChangedToMedium(notification: Notification) {
+    func summaryDetentCollapsed(notification: Notification) {
         withAnimation {
             showingDatePicker = false
         }
@@ -176,6 +176,7 @@ struct Summary: View {
     
     var datePicker: some View {
         WeekDatePicker(
+            currentDate: diaryPagerController.currentDate,
             didTapDayButton: {
             },
             willChangeDate: { date in

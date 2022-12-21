@@ -27,7 +27,7 @@ class DiaryController: ObservableObject {
     @Published var selectedSummaryDetent: PresentationDetent = .medium {
         didSet {
             if selectedSummaryDetent == .medium {
-                NotificationCenter.default.post(name: .diarySummaryDetentChangedToMedium, object: nil)
+                NotificationCenter.default.post(name: .summaryDetentCollapsed, object: nil)
             }
         }
     }
