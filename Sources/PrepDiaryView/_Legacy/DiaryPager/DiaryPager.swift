@@ -36,7 +36,7 @@ struct DiaryPager<PageContent: View>: View {
         .onPageWillChange(controller.pageWillChange(to:))
         
         .interactive(scale: includeDepthEffect ? 0.7 : 1.0)
-        .itemSpacing(includeDepthEffect ? 10 : 0.5)
+        .itemSpacing(includeDepthEffect ? 10 : 10)
         .if(includeDepthEffect, transform: { view in
             view
                 .interactive(rotation: true)
