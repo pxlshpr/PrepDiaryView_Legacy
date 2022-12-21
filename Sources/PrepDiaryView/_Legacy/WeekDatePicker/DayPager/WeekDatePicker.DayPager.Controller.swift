@@ -13,7 +13,8 @@ extension WeekDatePicker.DayPager {
 
         let willChangeDate: ((Date) -> ())?
         
-        var isLocked: Bool = false
+        var isHandlingDateChange: Bool = false
+        var isChangingDate: Bool = false
 
         init(willChangeDate: ((Date) -> ())? = nil) {
             self.willChangeDate = willChangeDate
@@ -30,8 +31,8 @@ extension WeekDatePicker.DayPager.Controller {
     }
     
     @objc func handleDateChange(notification: Notification) {
-        guard !isLocked else { return }
-        isLocked = true
+        guard !isHandlingDateChange else { return }
+        isHandlingDateChange = true
         
         guard let userInfo = notification.userInfo,
               let date = userInfo[Notification.Keys.date] as? Date else {
@@ -41,7 +42,7 @@ extension WeekDatePicker.DayPager.Controller {
         changeDate(to: date)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.isLocked = false
+            self.isHandlingDateChange = false
         }
     }
 }
@@ -141,7 +142,14 @@ extension WeekDatePicker.DayPager.Controller {
     }
     
     func changeDate(to newDate: Date) {
-        guard newDate.startOfDay != dateForDayIndex(indices[page.index]).startOfDay else { return }
+        guard !isChangingDate else { return }
+        isChangingDate = true
+
+        print("🟣 in WeekDatePicker.ChangeDate")
+        guard newDate.startOfDay != dateForDayIndex(indices[page.index]).startOfDay else {
+            isChangingDate = false
+            return
+        }
         
         let newDateDelta = newDate.numberOfDaysFrom(currentDate)
         
@@ -150,10 +158,12 @@ extension WeekDatePicker.DayPager.Controller {
         /// First filter out cases where we're changing to the next or previous day and call those handlers instead, as this is for day changes greater than 1 hop
         if newDateDelta == 1 {
             tappedNextDay()
+            isChangingDate = false
             return
         }
         if newDateDelta == -1 {
             tappedPreviousDay()
+            isChangingDate = false
             return
         }
         
@@ -179,6 +189,8 @@ extension WeekDatePicker.DayPager.Controller {
                     
                     /// Reset the index back to 1 as we've changed the dayIndices array
                     self.page.update(.new(index: 1))
+                    
+                    self.isChangingDate = false
                 }
             }
         } else {
@@ -205,6 +217,8 @@ extension WeekDatePicker.DayPager.Controller {
                     
                     /// Reset the index back to 1 as we've changed the dayIndices array
                     self.page.update(.new(index: 1))
+                    
+                    self.isChangingDate = false
                 }
             }
         }

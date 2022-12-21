@@ -52,7 +52,8 @@ public class DiaryPagerController: ObservableObject {
         NotificationCenter.default.addObserver(self, selector: #selector(weekPagerWillChangeDate), name: .weekPagerWillChangeDate, object: nil)
     }
     
-    var isLocked: Bool = false
+    var isChangingDate: Bool = false
+    var isHandlingDateChange: Bool = false
 
     @objc func didPickDateOnDayView(notification: Notification) {
         handleDateChange(notification: notification)
@@ -65,8 +66,8 @@ public class DiaryPagerController: ObservableObject {
     }
 
     @objc func handleDateChange(notification: Notification) {
-        guard !isLocked else { return }
-        isLocked = true
+        guard !isHandlingDateChange else { return }
+        isHandlingDateChange = true
 
         guard let userInfo = notification.userInfo,
               let date = userInfo[Notification.Keys.date] as? Date else {
@@ -75,7 +76,7 @@ public class DiaryPagerController: ObservableObject {
         changeDate(to: date)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.isLocked = false
+            self.isHandlingDateChange = false
         }
     }
 
@@ -180,13 +181,13 @@ public class DiaryPagerController: ObservableObject {
     //MARK: - Helpers
     func changeDate(to newDate: Date) {
         
-        guard !isLocked else { return }
-        isLocked = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.isLocked = false
+        guard !isChangingDate else {
+            return
         }
-        
+        isChangingDate = true
+
         guard newDate.startOfDay != dateForDayIndex(dayIndices[page.index]).startOfDay else {
+            isChangingDate = false
             return
         }
 
@@ -197,10 +198,12 @@ public class DiaryPagerController: ObservableObject {
         /// First filter out cases where we're changing to the next or previous day and call those handlers instead, as this is for day changes greater than 1 hop
         if newDateDelta == 1 {
             tappedNextDay()
+            isChangingDate = false
             return
         }
         if newDateDelta == -1 {
             tappedPreviousDay()
+            isChangingDate = false
             return
         }
         
@@ -246,6 +249,7 @@ public class DiaryPagerController: ObservableObject {
 //                    self.actionHandler(.didMoveToDate(newDate, newDateDelta))
 //                    self.didMoveToDate?(newDate, newDateDelta)
                     self.sendDateDidChangeNotification()
+                    self.isChangingDate = false
                 }
             }
         } else {
@@ -296,6 +300,7 @@ public class DiaryPagerController: ObservableObject {
 //                    self.actionHandler(.didMoveToDate(newDate, newDateDelta))
 //                    self.didMoveToDate?(newDate, newDateDelta)
                     self.sendDateDidChangeNotification()
+                    self.isChangingDate = false
                 }
             }
         }
