@@ -11,7 +11,7 @@ public enum DiaryPagerAction {
     case didMoveToDate(Date, Int)
 }
 
-class DiaryPagerController: ObservableObject {
+public class DiaryPagerController: ObservableObject {
     @Published var currentDate: Date = Date()
     @Published var page: Page = .withIndex(1)
     @Published var dayIndices = [-1, 0, 1]
@@ -20,29 +20,10 @@ class DiaryPagerController: ObservableObject {
     //TODO: CoreData
     @Published var currentDay: Day? = nil
     
-//    let didPageForwards: EmptyHandler?
-//    let didPageBackwards: EmptyHandler?
-//    let willMoveToDate: ((Date, Int) -> ())?
-//    let didMoveToDate: ((Date, Int) -> ())?
-//    let onChangePageOffset: ((Int) -> ())?
-    
-    var actionHandler: ((DiaryPagerAction) -> ())?
-    
-    init(
-        actionHandler: ((DiaryPagerAction) -> ())? = nil
-//        didPageForwards: EmptyHandler? = nil,
-//        didPageBackwards: EmptyHandler? = nil,
-//        onChangePageOffset: ((Int) -> ())? = nil,
-//        willMoveToDate: ((Date, Int) -> ())? = nil,
-//        didMoveToDate: ((Date, Int) -> ())? = nil
-    ) {
-        self.actionHandler = actionHandler
-//        self.didPageForwards = didPageForwards
-//        self.didPageBackwards = didPageBackwards
-//        self.onChangePageOffset = onChangePageOffset
-//        self.willMoveToDate = willMoveToDate
-//        self.didMoveToDate = didMoveToDate
-    }
+    public var mealsActionHandler: ((DiaryPagerAction) -> ())? = nil
+    public var summaryActionHandler: ((DiaryPagerAction) -> ())? = nil
+
+    public init() { }
     
     var currentDateIsToday: Bool {
         currentDate.startOfDay == Date().startOfDay
@@ -109,7 +90,8 @@ class DiaryPagerController: ObservableObject {
         dayIndices.removeFirst()
         page.update(.previous)
         isTransitioning = false
-        actionHandler?(.didPageForwards)
+        mealsActionHandler?(.didPageForwards)
+        summaryActionHandler?(.didPageForwards)
 //        didPageForwards?()
         sendDateDidChangeNotification()
     }
@@ -120,7 +102,8 @@ class DiaryPagerController: ObservableObject {
         dayIndices.removeLast()
         page.update(.next)
         isTransitioning = false
-        actionHandler?(.didPageBackwards)
+        mealsActionHandler?(.didPageBackwards)
+        summaryActionHandler?(.didPageBackwards)
 //        didPageBackwards?()
         sendDateDidChangeNotification()
     }
@@ -202,7 +185,9 @@ class DiaryPagerController: ObservableObject {
                 /// before carrying out the page action, so that the correct view is fetched
 //                self.onChangePageOffset?(newDateDelta + 1)
 
-                self.actionHandler?(.onChangePageOffset(newDateDelta - 2))
+                let action: DiaryPagerAction = .onChangePageOffset(newDateDelta - 2)
+                self.mealsActionHandler?(action)
+                self.summaryActionHandler?(action)
 //                self.onChangePageOffset?(newDateDelta - 2)
 
                 withAnimation {
@@ -225,7 +210,9 @@ class DiaryPagerController: ObservableObject {
                     self.page.update(.new(index: 1))
                     
                     /// Let any interested parties know that the page action completed
-                    self.actionHandler?(.didMoveToDate(newDate, newDateDelta))
+                    let action: DiaryPagerAction = .didMoveToDate(newDate, newDateDelta)
+                    self.mealsActionHandler?(action)
+                    self.summaryActionHandler?(action)
 //                    self.didMoveToDate?(newDate, newDateDelta)
                     self.sendDateDidChangeNotification()
                 }
@@ -234,7 +221,9 @@ class DiaryPagerController: ObservableObject {
             
             /// Indicate that the pager index will be offset by 1 before inserting the extra index at the start
             /// (so that the correct view is still fetched)
-            actionHandler?(.onChangePageOffset(-1))
+            let action: DiaryPagerAction = .onChangePageOffset(-1)
+            self.mealsActionHandler?(action)
+            self.summaryActionHandler?(action)
 //            onChangePageOffset?(-1)
             
             
@@ -249,7 +238,9 @@ class DiaryPagerController: ObservableObject {
                 /// Indicate that the pager index will be offset by the date delta + 1
                 /// (to account for the extra element added at the start) before inserting the extra index at the start
                 /// before carrying out the page action, so that the correct view is fetched
-                self.actionHandler?(.onChangePageOffset(newDateDelta + 1))
+                let action: DiaryPagerAction = .onChangePageOffset(newDateDelta + 1)
+                self.mealsActionHandler?(action)
+                self.summaryActionHandler?(action)
 //                self.onChangePageOffset?(newDateDelta + 1)
 
                 withAnimation {
@@ -272,7 +263,9 @@ class DiaryPagerController: ObservableObject {
                     self.page.update(.new(index: 1))
 
                     /// Let any interested parties know that the page action completed
-                    self.actionHandler?(.didMoveToDate(newDate, newDateDelta))
+                    let action: DiaryPagerAction = .didMoveToDate(newDate, newDateDelta)
+                    self.mealsActionHandler?(action)
+                    self.summaryActionHandler?(action)
 //                    self.didMoveToDate?(newDate, newDateDelta)
                     self.sendDateDidChangeNotification()
                 }

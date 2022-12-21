@@ -4,8 +4,9 @@ import PrepDataTypes
 public struct DiaryView<PageContent: View>: View {
 
     @StateObject var controller: DiaryController
-    @StateObject var pagerController: DiaryPagerController
-    
+//    @StateObject var pagerController: DiaryPagerController
+    @ObservedObject var pagerController: DiaryPagerController
+
     @ViewBuilder let pageContentBuilder: (Date, Int, Int) -> PageContent
     
     @Binding var setToToday: Bool
@@ -14,29 +15,22 @@ public struct DiaryView<PageContent: View>: View {
     @State var showingDatePicker = false
     
     public init(
+        pagerController: DiaryPagerController,
         currentDate: Binding<Date>,
         setToToday: Binding<Bool>,
-        actionHandler: ((DiaryPagerAction) -> ())? = nil,
-//        didPageForwads: EmptyHandler? = nil,
-//        didPageBackwards: EmptyHandler? = nil,
-//        onChangePageOffset: ((Int) -> ())? = nil,
-//        willMoveToDate: ((Date, Int) -> ())? = nil,
-//        didMoveToDate: ((Date, Int) -> ())? = nil,
+        actionHandler: @escaping ((DiaryPagerAction) -> ()),
         @ViewBuilder pageContentBuilder: @escaping (Date, Int, Int) -> PageContent
     ) {
         _setToToday = setToToday
         _currentDate = currentDate
         self.pageContentBuilder = pageContentBuilder
         
-        let pagerController = DiaryPagerController(
-            actionHandler: actionHandler
-//            didPageForwards: didPageForwads,
-//            didPageBackwards: didPageBackwards,
-//            onChangePageOffset: onChangePageOffset,
-//            willMoveToDate: willMoveToDate,
-//            didMoveToDate: didMoveToDate
-        )
-        _pagerController = StateObject(wrappedValue: pagerController)
+//        let pagerController = DiaryPagerController(
+//            actionHandler: actionHandler
+//        )
+//        _pagerController = StateObject(wrappedValue: pagerController)
+        self.pagerController = pagerController
+        
         _controller = StateObject(wrappedValue: DiaryController(pagerController: pagerController))
     }
     
