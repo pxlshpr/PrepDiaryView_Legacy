@@ -282,7 +282,6 @@ public class DiaryPagerController: ObservableObject {
                     self.page.update(.new(index: 1))
 
                     /// Let any interested parties know that the page action completed
-                    print("🟣 DiaryPagerController sending didMoveToDate \(Date().timeIntervalSince1970)")
                     self.delegate.didMoveToDate(newDate, delta: newDateDelta)
 //                    self.actionHandler(.didMoveToDate(newDate, newDateDelta))
 //                    self.didMoveToDate?(newDate, newDateDelta)
