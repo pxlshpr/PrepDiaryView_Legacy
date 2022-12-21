@@ -16,11 +16,12 @@ public struct DiaryView<PageContent: View>: View {
     public init(
         currentDate: Binding<Date>,
         setToToday: Binding<Bool>,
-        didPageForwads: EmptyHandler? = nil,
-        didPageBackwards: EmptyHandler? = nil,
-        onChangePageOffset: ((Int) -> ())? = nil,
-        willMoveToDate: ((Date, Int) -> ())? = nil,
-        didMoveToDate: ((Date, Int) -> ())? = nil,
+        actionHandler: ((DiaryPagerAction) -> ())? = nil,
+//        didPageForwads: EmptyHandler? = nil,
+//        didPageBackwards: EmptyHandler? = nil,
+//        onChangePageOffset: ((Int) -> ())? = nil,
+//        willMoveToDate: ((Date, Int) -> ())? = nil,
+//        didMoveToDate: ((Date, Int) -> ())? = nil,
         @ViewBuilder pageContentBuilder: @escaping (Date, Int, Int) -> PageContent
     ) {
         _setToToday = setToToday
@@ -28,11 +29,12 @@ public struct DiaryView<PageContent: View>: View {
         self.pageContentBuilder = pageContentBuilder
         
         let pagerController = DiaryPagerController(
-            didPageForwards: didPageForwads,
-            didPageBackwards: didPageBackwards,
-            onChangePageOffset: onChangePageOffset,
-            willMoveToDate: willMoveToDate,
-            didMoveToDate: didMoveToDate
+            actionHandler: actionHandler
+//            didPageForwards: didPageForwads,
+//            didPageBackwards: didPageBackwards,
+//            onChangePageOffset: onChangePageOffset,
+//            willMoveToDate: willMoveToDate,
+//            didMoveToDate: didMoveToDate
         )
         _pagerController = StateObject(wrappedValue: pagerController)
         _controller = StateObject(wrappedValue: DiaryController(pagerController: pagerController))
