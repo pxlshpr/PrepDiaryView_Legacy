@@ -68,6 +68,15 @@ struct Summary: View {
     }
     
     var content: some View {
+        
+//        DiaryView(
+//            pagerController: <#T##DiaryPagerController#>,
+//            currentDate: <#T##Binding<Date>#>,
+//            setToToday: <#T##Binding<Bool>#>,
+//            actionHandler: <#T##((DiaryPagerAction) -> ())##((DiaryPagerAction) -> ())##(DiaryPagerAction) -> ()#>,
+//            pageContentBuilder: <#T##(Date, Int, Int) -> View#>
+//        )
+        
         VStack(spacing: 0) {
             if showingDatePicker {
                 datePicker

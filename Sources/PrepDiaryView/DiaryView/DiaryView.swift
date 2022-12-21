@@ -15,10 +15,11 @@ public struct DiaryView<PageContent: View>: View {
     @State var showingDatePicker = false
     
     public init(
-        pagerController: DiaryPagerController,
         currentDate: Binding<Date>,
         setToToday: Binding<Bool>,
-        actionHandler: @escaping ((DiaryPagerAction) -> ()),
+        pagerController: DiaryPagerController,
+//        pagerDelegate: DiaryPagerDelegate,
+//        actionHandler: @escaping ((DiaryPagerAction) -> ()),
         @ViewBuilder pageContentBuilder: @escaping (Date, Int, Int) -> PageContent
     ) {
         _setToToday = setToToday
@@ -26,11 +27,11 @@ public struct DiaryView<PageContent: View>: View {
         self.pageContentBuilder = pageContentBuilder
         
 //        let pagerController = DiaryPagerController(
-//            actionHandler: actionHandler
+//            delegate: pagerDelegate
 //        )
 //        _pagerController = StateObject(wrappedValue: pagerController)
         self.pagerController = pagerController
-        
+
         _controller = StateObject(wrappedValue: DiaryController(pagerController: pagerController))
     }
     
