@@ -6,7 +6,6 @@ import PrepDataTypes
 
 struct DiaryPager<PageContent: View>: View {
     @EnvironmentObject var controller: DiaryPagerController
-    @EnvironmentObject var diaryController: DiaryController
     
     let includeDepthEffect: Bool
     @ViewBuilder let pageContentBuilder: (Date, Int, Int) -> PageContent

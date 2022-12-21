@@ -3,7 +3,7 @@ import PrepDataTypes
 
 public struct DiaryView<PageContent: View>: View {
 
-    @StateObject var controller: DiaryController
+//    @StateObject var controller: DiaryController
 //    @StateObject var pagerController: DiaryPagerController
     @ObservedObject var pagerController: DiaryPagerController
 
@@ -38,7 +38,7 @@ public struct DiaryView<PageContent: View>: View {
 //        _pagerController = StateObject(wrappedValue: pagerController)
         self.pagerController = pagerController
 
-        _controller = StateObject(wrappedValue: DiaryController(pagerController: pagerController))
+//        _controller = StateObject(wrappedValue: DiaryController(pagerController: pagerController))
         
         if let showingWeekPager {
             _showingWeekPager = showingWeekPager
@@ -98,7 +98,7 @@ public struct DiaryView<PageContent: View>: View {
             includeDepthEffect: includeDepthEffect,
             pageContentBuilder: pageContentBuilder
         )
-        .environmentObject(controller)
+//        .environmentObject(controller)
         .environmentObject(pagerController)
         .onChange(of: pagerController.currentDate) { newValue in
             //TODO: Send this as a notification if not doing so already and update meter
