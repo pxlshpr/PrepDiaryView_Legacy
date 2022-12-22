@@ -66,18 +66,24 @@ public class DiaryPagerController: ObservableObject {
     }
 
     @objc func handleDateChange(notification: Notification) {
+        
+        func unlockAfterDelay() {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                self.isHandlingDateChange = false
+            }
+        }
+        
         guard !isHandlingDateChange else { return }
         isHandlingDateChange = true
 
         guard let userInfo = notification.userInfo,
               let date = userInfo[Notification.Keys.date] as? Date else {
+            unlockAfterDelay()
             return
         }
         changeDate(to: date)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.isHandlingDateChange = false
-        }
+        unlockAfterDelay()
     }
 
     func goToToday() {

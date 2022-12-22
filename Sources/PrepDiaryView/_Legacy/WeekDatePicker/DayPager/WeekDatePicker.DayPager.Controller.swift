@@ -31,19 +31,24 @@ extension WeekDatePicker.DayPager.Controller {
     }
     
     @objc func handleDateChange(notification: Notification) {
+        func unlockAfterDelay() {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                self.isHandlingDateChange = false
+            }
+        }
+        
         guard !isHandlingDateChange else { return }
         isHandlingDateChange = true
         
         guard let userInfo = notification.userInfo,
               let date = userInfo[Notification.Keys.date] as? Date else {
+            unlockAfterDelay()
             return
         }
         
         changeDate(to: date)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.isHandlingDateChange = false
-        }
+     
+        unlockAfterDelay()
     }
 }
 
@@ -145,7 +150,6 @@ extension WeekDatePicker.DayPager.Controller {
         guard !isChangingDate else { return }
         isChangingDate = true
 
-        print("🟣 in WeekDatePicker.ChangeDate")
         guard newDate.startOfDay != dateForDayIndex(indices[page.index]).startOfDay else {
             isChangingDate = false
             return

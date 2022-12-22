@@ -45,17 +45,26 @@ extension WeekDatePicker.WeekPager.Controller {
     }
     
     @objc func handleDateChange(notification: Notification) {
+        
+        func unlockAfterDelay() {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                self.isLocked = false
+            }
+        }
+        
         guard !isLocked else { return }
         isLocked = true
 
         guard let userInfo = notification.userInfo,
               let newDate = userInfo[Notification.Keys.date] as? Date else {
+            unlockAfterDelay()
             return
         }
         
         /// If this notification was sent by this `WeekPager` itself, ignore it
         if let sender = userInfo[Notification.Keys.sender] as? WeekDatePicker.WeekPager.Controller,
             sender === self {
+            unlockAfterDelay()
             return
         }
         
@@ -66,9 +75,7 @@ extension WeekDatePicker.WeekPager.Controller {
             changeWeek(toWeekContaining: newDate)
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.isLocked = false
-        }
+        unlockAfterDelay()
     }
     
     //MARK: - Pager Related
