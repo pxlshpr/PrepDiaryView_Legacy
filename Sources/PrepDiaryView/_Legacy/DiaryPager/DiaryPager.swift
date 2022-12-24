@@ -8,6 +8,7 @@ struct DiaryPager<PageContent: View>: View {
     @EnvironmentObject var controller: DiaryPagerController
     
     @Binding var allowsDragging: Bool
+    let simultaneousDragging: Bool
     let includeDepthEffect: Bool
     @ViewBuilder let pageContentBuilder: (Date, Int, Int) -> PageContent
 
@@ -33,7 +34,7 @@ struct DiaryPager<PageContent: View>: View {
         .sensitivity(.high)
 //        .pagingPriority(.high)
         .allowsDragging(allowsDragging)
-        .pagingPriority(.simultaneous)
+        .pagingPriority(simultaneousDragging ? .simultaneous : .high)
         .onPageChanged(controller.pageChanged(to:))
         .onPageWillChange(controller.pageWillChange(to:))
         
