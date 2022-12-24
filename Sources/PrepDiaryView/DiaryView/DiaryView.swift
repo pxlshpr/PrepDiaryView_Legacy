@@ -17,6 +17,7 @@ public struct DiaryView<PageContent: View>: View {
     @Binding var showingWeekPager: Bool
     
     let includeDepthEffect: Bool
+    @Binding var allowsDragging: Bool
     
     public init(
         currentDate: Binding<Date>,
@@ -24,12 +25,14 @@ public struct DiaryView<PageContent: View>: View {
         pagerController: DiaryPagerController,
         showingWeekPager: Binding<Bool>? = nil,
         includeDepthEffect: Bool,
+        allowsDragging: Binding<Bool>,
 //        pagerDelegate: DiaryPagerDelegate,
 //        actionHandler: @escaping ((DiaryPagerAction) -> ()),
         @ViewBuilder pageContentBuilder: @escaping (Date, Int, Int) -> PageContent
     ) {
         _setToToday = setToToday
         _currentDate = currentDate
+        _allowsDragging = allowsDragging
         self.pageContentBuilder = pageContentBuilder
         
 //        let pagerController = DiaryPagerController(
@@ -95,6 +98,7 @@ public struct DiaryView<PageContent: View>: View {
 
     var pager: some View {
         DiaryPager(
+            allowsDragging: $allowsDragging,
             includeDepthEffect: includeDepthEffect,
             pageContentBuilder: pageContentBuilder
         )

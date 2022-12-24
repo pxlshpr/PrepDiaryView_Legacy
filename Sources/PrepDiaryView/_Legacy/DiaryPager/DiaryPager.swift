@@ -7,6 +7,7 @@ import PrepDataTypes
 struct DiaryPager<PageContent: View>: View {
     @EnvironmentObject var controller: DiaryPagerController
     
+    @Binding var allowsDragging: Bool
     let includeDepthEffect: Bool
     @ViewBuilder let pageContentBuilder: (Date, Int, Int) -> PageContent
 
@@ -30,7 +31,9 @@ struct DiaryPager<PageContent: View>: View {
             content: contentForDayIndex
         )
         .sensitivity(.high)
-        .pagingPriority(.high)
+//        .pagingPriority(.high)
+        .allowsDragging(allowsDragging)
+        .pagingPriority(.simultaneous)
         .onPageChanged(controller.pageChanged(to:))
         .onPageWillChange(controller.pageWillChange(to:))
         
