@@ -15,6 +15,10 @@ struct WeekDatePicker: View {
     let willChangeDate: ((Date) -> ())?
     let didChangeDate: ((Date) -> ())?
     
+    let debugNotification = NotificationCenter.default.publisher(for: .debugNotification)
+    
+    @State var refreshBool: Bool = false
+    
     init(
         currentDate: Date,
         didTapDayButton: @escaping () -> Void,
@@ -47,12 +51,16 @@ extension WeekDatePicker {
                     willChangeDate: willChangeDate,
                     didChangeDate: didChangeDate
                 )
+                .id(refreshBool)
             }
             .padding(.horizontal)
             DayPager(
                 didTapDayButton: didTapDayButton,
                 willChangeDate: willChangeDate
             )
+        }
+        .onReceive(debugNotification) { notification in
+            refreshBool.toggle()
         }
     }
     
