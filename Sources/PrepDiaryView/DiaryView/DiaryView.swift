@@ -16,7 +16,7 @@ public struct DiaryView<PageContent: View>: View {
     
     @Binding var showingWeekPager: Bool
     
-    let simultaneousDragging: Bool
+    @Binding var simultaneousDragging: Bool
     let includeDepthEffect: Bool
     @Binding var allowsDragging: Bool
     
@@ -25,7 +25,7 @@ public struct DiaryView<PageContent: View>: View {
         setToToday: Binding<Bool>,
         pagerController: DiaryPagerController,
         showingWeekPager: Binding<Bool>? = nil,
-        simultaneousDragging: Bool,
+        simultaneousDragging: Binding<Bool>,
         includeDepthEffect: Bool,
         allowsDragging: Binding<Bool>,
 //        pagerDelegate: DiaryPagerDelegate,
@@ -51,7 +51,7 @@ public struct DiaryView<PageContent: View>: View {
             _showingWeekPager = .constant(true)
         }
         
-        self.simultaneousDragging = simultaneousDragging
+        _simultaneousDragging = simultaneousDragging
         self.includeDepthEffect = includeDepthEffect
     }
     
@@ -102,7 +102,7 @@ public struct DiaryView<PageContent: View>: View {
     var pager: some View {
         DiaryPager(
             allowsDragging: $allowsDragging,
-            simultaneousDragging: simultaneousDragging,
+            simultaneousDragging: $simultaneousDragging,
             includeDepthEffect: includeDepthEffect,
             pageContentBuilder: pageContentBuilder
         )

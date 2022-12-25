@@ -8,7 +8,7 @@ struct DiaryPager<PageContent: View>: View {
     @EnvironmentObject var controller: DiaryPagerController
     
     @Binding var allowsDragging: Bool
-    let simultaneousDragging: Bool
+    @Binding var simultaneousDragging: Bool
     let includeDepthEffect: Bool
     @ViewBuilder let pageContentBuilder: (Date, Int, Int) -> PageContent
 
