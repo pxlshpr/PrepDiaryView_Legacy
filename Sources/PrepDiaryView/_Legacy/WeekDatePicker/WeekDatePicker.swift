@@ -60,7 +60,7 @@ extension WeekDatePicker {
             )
         }
         .onReceive(debugNotification) { notification in
-            refreshBool.toggle()
+//            refreshBool.toggle()
         }
     }
     
