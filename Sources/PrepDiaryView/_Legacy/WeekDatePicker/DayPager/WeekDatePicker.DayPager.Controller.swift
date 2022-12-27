@@ -16,9 +16,13 @@ extension WeekDatePicker.DayPager {
         var isHandlingDateChange: Bool = false
         var isChangingDate: Bool = false
 
-        init(willChangeDate: ((Date) -> ())? = nil) {
+        init(
+            currentDate: Date,
+            willChangeDate: ((Date) -> ())? = nil
+        ) {
             self.willChangeDate = willChangeDate
             addNotificationObservers()
+            self.setDate(to: currentDate)
         }
     }
 }
@@ -225,6 +229,86 @@ extension WeekDatePicker.DayPager.Controller {
                     self.isChangingDate = false
                 }
             }
+        }
+    }
+    
+    /// Has the same effect as `changeDate(to:)` without the animations or delays
+    func setDate(to newDate: Date) {
+
+        guard newDate.startOfDay != dateForDayIndex(indices[page.index]).startOfDay else {
+            return
+        }
+        
+        let newDateDelta = newDate.numberOfDaysFrom(currentDate)
+        
+        /// First filter out cases where we're changing to the next or previous day and call those handlers instead, as this is for day changes greater than 1 hop
+        if newDateDelta == 1 {
+            page.update(.next)
+            currentDate = currentDate.moveDayBy(1)
+            slideWindowForward()
+            return
+        }
+        if newDateDelta == -1 {
+            page.update(.previous)
+            currentDate = currentDate.moveDayBy(-1)
+            slideWindowBackward()
+            return
+        }
+        
+        let newDayIndex = newDate.numberOfDaysFrom(Date())
+        if newDate > currentDate {
+            /// first append that date to the end of the array
+            indices.append(newDayIndex)
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+//                withAnimation {
+                    /// now move the index there (we’ll be traversing two pages forwards)
+                    self.currentDate = newDate
+                    self.page.update(.new(index: 3))
+//                }
+                
+                /// Once the transition animation completes
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    /// Remove the first three pages (leaving us with only the current `newDayIndex` that we're on)
+                    self.indices.removeFirst(3)
+                    
+                    /// Insert the true neighbours to the `dayIndices` array
+                    self.indices.insert(newDayIndex - 1, at: 0)
+                    self.indices.append(newDayIndex + 1)
+                    
+                    /// Reset the index back to 1 as we've changed the dayIndices array
+                    self.page.update(.new(index: 1))
+                    
+                    self.isChangingDate = false
+//                }
+//            }
+        } else {
+            /// first insert that date to the start of the array
+            indices.insert(newDayIndex, at: 0)
+            /// move the page index forward by 1 so that we're still pointing to the correct day before the animation occurs
+            page.update(.next)
+            
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+//                withAnimation {
+                    /// now move the index there (we’ll be traversing two pages backwards)
+                    self.currentDate = newDate
+                    self.page.update(.new(index: 0))
+//                }
+                
+                /// Once the transition animation completes
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    /// Remove the last three pages (leaving us with only the current `newDayIndex` that we're on)
+                    self.indices.removeLast(3)
+                    
+                    /// Insert the true neighbours to the `dayIndices` array
+                    self.indices.insert(newDayIndex - 1, at: 0)
+                    self.indices.append(newDayIndex + 1)
+                    
+                    /// Reset the index back to 1 as we've changed the dayIndices array
+                    self.page.update(.new(index: 1))
+                    
+                    self.isChangingDate = false
+//                }
+//            }
         }
     }
 }

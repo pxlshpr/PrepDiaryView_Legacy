@@ -55,6 +55,7 @@ extension WeekDatePicker {
             }
             .padding(.horizontal)
             DayPager(
+                currentDate: startingDate,
                 didTapDayButton: didTapDayButton,
                 willChangeDate: willChangeDate
             )

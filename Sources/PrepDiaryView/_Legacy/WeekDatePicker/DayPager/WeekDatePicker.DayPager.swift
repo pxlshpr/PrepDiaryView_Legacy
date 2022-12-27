@@ -9,11 +9,15 @@ extension WeekDatePicker {
         let didTapDayButton: () -> ()
         
         init(
+            currentDate: Date,
             didTapDayButton: @escaping () -> (),
             willChangeDate: ((Date) -> ())? = nil
         ) {
             self.didTapDayButton = didTapDayButton
-            let controller = Controller(willChangeDate: willChangeDate)
+            let controller = Controller(
+                currentDate: currentDate,
+                willChangeDate: willChangeDate
+            )
             _controller = StateObject(wrappedValue: controller)
         }
     }
