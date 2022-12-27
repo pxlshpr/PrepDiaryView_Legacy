@@ -37,32 +37,44 @@ extension WeekDatePicker {
     var body: some View {
         VStack(spacing: 0) {
             Group {
-                HStack {
-                    ForEach(weekdayStrings, id: \.self) { string in
-                        Text(string)
-                            .frame(maxWidth: .infinity)
-                            .font(.footnote)
-                            .foregroundColor(foregroundColor(forWeekdayString: string))
-                    }
-                }
-                WeekPager(
-                    currentDate: startingDate,
-                    didTapDayButton: didTapDayButton,
-                    willChangeDate: willChangeDate,
-                    didChangeDate: didChangeDate
-                )
-                .id(refreshBool)
+                weekdayHeadings
+                weekPager
             }
             .padding(.horizontal)
-            DayPager(
-                currentDate: startingDate,
-                didTapDayButton: didTapDayButton,
-                willChangeDate: willChangeDate
-            )
+            dayPager
         }
         .onReceive(debugNotification) { notification in
 //            refreshBool.toggle()
         }
+    }
+    
+    var weekdayHeadings: some View {
+        HStack {
+            ForEach(weekdayStrings, id: \.self) { string in
+                Text(string)
+                    .frame(maxWidth: .infinity)
+                    .font(.footnote)
+                    .foregroundColor(foregroundColor(forWeekdayString: string))
+            }
+        }
+    }
+    
+    var weekPager: some View {
+        WeekPager(
+            currentDate: startingDate,
+            didTapDayButton: didTapDayButton,
+            willChangeDate: willChangeDate,
+            didChangeDate: didChangeDate
+        )
+        .id(refreshBool)
+    }
+    
+    var dayPager: some View {
+        DayPager(
+            currentDate: startingDate,
+            didTapDayButton: didTapDayButton,
+            willChangeDate: willChangeDate
+        )
     }
     
     func foregroundColor(forWeekdayString string: String) -> Color {

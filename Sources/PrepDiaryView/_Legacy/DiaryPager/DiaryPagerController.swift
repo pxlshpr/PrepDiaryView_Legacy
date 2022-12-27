@@ -28,7 +28,6 @@ public class DiaryPagerController: ObservableObject {
     //TODO: CoreData
     @Published var currentDay: Day? = nil
     
-    
 //    var actionHandler: ((DiaryPagerAction) -> ())
     let delegate: DiaryPagerDelegate
     
@@ -36,6 +35,15 @@ public class DiaryPagerController: ObservableObject {
     public init(delegate: DiaryPagerDelegate) {
 //        self.actionHandler = actionHandler
         self.delegate = delegate
+    }
+    
+    public func copy(with delegate: DiaryPagerDelegate) -> DiaryPagerController {
+        let copy = DiaryPagerController(delegate: delegate)
+        copy.currentDate = currentDate
+        copy.page = page
+        copy.dayIndices = dayIndices
+        copy.currentDay = currentDay
+        return copy
     }
     
     var currentDateIsToday: Bool {

@@ -114,3 +114,4 @@ public struct DiaryView<PageContent: View>: View {
         }
     }
 }
+
