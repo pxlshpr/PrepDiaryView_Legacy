@@ -1,5 +1,6 @@
 import SwiftUI
 import PrepDataTypes
+import SwiftUISugar
 
 public struct DiaryView<PageContent: View>: View {
 
@@ -19,6 +20,8 @@ public struct DiaryView<PageContent: View>: View {
     @Binding var simultaneousDragging: Bool
     let includeDepthEffect: Bool
     @Binding var allowsDragging: Bool
+    
+    let didChangeDateOutsideDiaryView = NotificationCenter.default.publisher(for: .didChangeDateOutsideDiaryView)
     
     public init(
         currentDate: Binding<Date>,
@@ -61,9 +64,23 @@ public struct DiaryView<PageContent: View>: View {
                 currentDate = newValue
             }
             .onChange(of: setToToday) { newValue in
-                NotificationCenter.sendNotificationThatDiaryDateWillChange(to: Date().startOfDay)
-                pagerController.changeDate(to: Date().startOfDay)
+                changeDate(to: Date())
+//                NotificationCenter.sendNotificationThatDiaryDateWillChange(to: Date().startOfDay)
+//                pagerController.changeDate(to: Date().startOfDay)
             }
+            .onReceive(didChangeDateOutsideDiaryView, perform: didChangeDateOutsideDiaryView)
+    }
+    
+    func didChangeDateOutsideDiaryView(notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let date = userInfo[Notification.Keys.date] as? Date
+        else { return }
+        changeDate(to: date)
+    }
+    
+    func changeDate(to newDate: Date) {
+        NotificationCenter.sendNotificationThatDiaryDateWillChange(to: newDate.startOfDay)
+        pagerController.changeDate(to: newDate.startOfDay)
     }
     
     var navigationView: some View {
@@ -79,9 +96,14 @@ public struct DiaryView<PageContent: View>: View {
     }
     
     var datePicker: some View {
-        DatePickerView(date: pagerController.currentDate)
-            .presentationDetents([.medium])
-            .presentationDragIndicator(.hidden)
+        DatePickerView(date: pagerController.currentDate) { pickedDate in
+            NotificationCenter.default.post(
+                name: .didPickDateOnDayView,
+                object: nil,
+                userInfo: [Notification.Keys.date: pickedDate])
+        }
+        .presentationDetents([.medium])
+        .presentationDragIndicator(.hidden)
     }
     
     var weekDatePicker: some View {
