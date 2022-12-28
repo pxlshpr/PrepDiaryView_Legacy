@@ -1,16 +1,16 @@
 //import SwiftUI
 //import SwiftHaptics
 //
-//public struct DatePickerView: View {
-//
+//public struct DatePickerViewTemp: View {
+//    
 //    @Environment(\.dismiss) var dismiss
 //    @State var date: Date
 //
-//    let didPickDate: ((Date) -> ())?
-//
+//    let didPickDate: ((Date) -> ())
+//    
 //    public init(
 //        date: Date,
-//        didPickDate: ((Date) -> ())? = nil
+//        didPickDate: @escaping ((Date) -> ())
 //    ) {
 //        _date = State(initialValue: date)
 //        self.didPickDate = didPickDate
@@ -23,13 +23,26 @@
 //            }
 //            .navigationTitle(title)
 //            .navigationBarTitleDisplayMode(.inline)
+//            .toolbar { trailingContent }
 //        }
 //    }
-//
+//    
+//    var trailingContent: some ToolbarContent {
+//        ToolbarItem(placement: .navigationBarTrailing) {
+//            if date.startOfDay != Date().startOfDay {
+//                Button("Today") {
+//                    Haptics.feedback(style: .soft)
+//                    didPickDate(Date().startOfDay)
+//                    dismiss()
+//                }
+//            }
+//        }
+//    }
+//    
 //    var title: String {
 //        "Pick a date"
 //    }
-//
+//    
 //    var datePicker: some View {
 //        DatePicker(
 //            "Pick a date",
@@ -38,21 +51,9 @@
 //        )
 //        .datePickerStyle(.graphical)
 //        .onChange(of: date) { pickedDate in
-//            if let didPickDate {
-//                didPickDate(pickedDate)
-//                dismiss()
-//            } else {
-//                Haptics.feedback(style: .soft)
-//                sendDatePickedNotification(pickedDate: pickedDate)
-//                dismiss()
-//            }
+//            Haptics.feedback(style: .soft)
+//            didPickDate(pickedDate)
+//            dismiss()
 //        }
-//    }
-//
-//    func sendDatePickedNotification(pickedDate: Date) {
-//        NotificationCenter.default.post(
-//            name: .didPickDateOnDayView,
-//            object: nil,
-//            userInfo: [Notification.Keys.date: pickedDate])
 //    }
 //}
