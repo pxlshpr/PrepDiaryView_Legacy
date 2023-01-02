@@ -16,10 +16,13 @@ extension WeekDatePicker.DayPager {
         var isHandlingDateChange: Bool = false
         var isChangingDate: Bool = false
 
+        let initialDate: Date
+        
         init(
             currentDate: Date,
             willChangeDate: ((Date) -> ())? = nil
         ) {
+            initialDate = Date()
             self.willChangeDate = willChangeDate
             addNotificationObservers()
             self.setDate(to: currentDate)
@@ -112,7 +115,9 @@ extension WeekDatePicker.DayPager.Controller {
     //MARK: Helpers
     
     func dateForDayIndex(_ dayIndex: Int) -> Date {
-        let date = Date().moveDayBy(dayIndex)
+        /// Using `initialDate` (set at init) instead so that passing midnight doesn't mess things up
+//        let date = Date().moveDayBy(dayIndex)
+        let date = initialDate.moveDayBy(dayIndex)
         return date
     }
     

@@ -31,10 +31,13 @@ public class DiaryPagerController: ObservableObject {
 //    var actionHandler: ((DiaryPagerAction) -> ())
     let delegate: DiaryPagerDelegate
     
+    let initialDate: Date
+    
 //    init(actionHandler: @escaping ((DiaryPagerAction) -> ())) {
     public init(delegate: DiaryPagerDelegate) {
 //        self.actionHandler = actionHandler
         self.delegate = delegate
+        initialDate = Date()
     }
     
     public func copy(with delegate: DiaryPagerDelegate) -> DiaryPagerController {
@@ -188,7 +191,9 @@ public class DiaryPagerController: ObservableObject {
     }
     
     func dateForDayIndex(_ dayIndex: Int) -> Date {
-        let date = Date().moveDayBy(dayIndex)
+        /// Using `initialDate` (set at init) instead so that passing midnight doesn't mess things up
+//        let date = Date().moveDayBy(dayIndex)
+        let date = initialDate.moveDayBy(dayIndex)
         return date
     }
     
