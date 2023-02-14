@@ -12,6 +12,9 @@ struct DiaryPager<PageContent: View>: View {
     let includeDepthEffect: Bool
     @ViewBuilder let pageContentBuilder: (Date, Int, Int) -> PageContent
 
+    @StateObject var page2 = Page.first()
+    var data2 = Array(0..<14)
+
     var body: some View {
         pager
     }
@@ -24,7 +27,25 @@ struct DiaryPager<PageContent: View>: View {
         )
     }
     
+    /// New looping pager
     var pager: some View {
+        Pager(page: self.page2,
+              data: self.data2,
+              id: \.self) { page in
+            ZStack {
+                Color.yellow
+                Text("\(page)")
+                    .font(.largeTitle)
+                    .fontWeight(.black)
+            }
+        }
+        .pagingPriority(.simultaneous)
+        .loopPages()
+        .sensitivity(.high)
+        .itemSpacing(10)
+    }
+    
+    var pager_legacy: some View {
         Pager(
             page: controller.page,
             data: controller.dayIndices,
@@ -38,12 +59,12 @@ struct DiaryPager<PageContent: View>: View {
         .onPageChanged(controller.pageChanged(to:))
         .onPageWillChange(controller.pageWillChange(to:))
         
-        .interactive(scale: includeDepthEffect ? 0.7 : 1.0)
-        .itemSpacing(includeDepthEffect ? 10 : 10)
-        .if(includeDepthEffect, transform: { view in
-            view
-                .interactive(rotation: true)
-        })
+//        .interactive(scale: includeDepthEffect ? 0.7 : 1.0)
+//        .itemSpacing(includeDepthEffect ? 10 : 10)
+//        .if(includeDepthEffect, transform: { view in
+//            view
+//                .interactive(rotation: true)
+//        })
             
         .onAppear {
             /// We're doing this here to ensure the observers only get observed once
