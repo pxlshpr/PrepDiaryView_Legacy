@@ -13,18 +13,19 @@ struct DiaryPager<PageContent: View>: View {
     @ViewBuilder let pageContentBuilder: (Date, Int, Int) -> PageContent
 
     @StateObject var page2 = Page.first()
-    var data2 = Array(0..<14)
+    var data2 = PrepConstants.dayIndices
 
     var body: some View {
-        pager
+        contentForDayIndex(0)
+//        pager
     }
     
     func contentForDayIndex(_ dayIndex: Int) -> some View {
-        pageContentBuilder(
-            controller.dateForDayIndex(dayIndex),
-            dayIndex,
-            controller.position(of: dayIndex)
-        )
+        let date = controller.dateForDayIndex(dayIndex)
+        let position = controller.position(of: dayIndex)
+        
+//        print("pageContentBuilder(date: \(date.calendarDayString), dayIndex: \(dayIndex), position: \(position))")
+        return pageContentBuilder(date, dayIndex, position)
     }
     
     /// New looping pager
@@ -32,14 +33,16 @@ struct DiaryPager<PageContent: View>: View {
         Pager(page: self.page2,
               data: self.data2,
               id: \.self) { page in
-            ZStack {
-                Color.yellow
-                Text("\(page)")
-                    .font(.largeTitle)
-                    .fontWeight(.black)
-            }
+            contentForDayIndex(page)
+//            ZStack {
+//                Color.yellow
+//                Text("\(page)")
+//                    .font(.largeTitle)
+//                    .fontWeight(.black)
+//            }
         }
-        .pagingPriority(.simultaneous)
+//        .pagingPriority(.simultaneous)
+        .pagingPriority(.high)
         .loopPages()
         .sensitivity(.high)
         .itemSpacing(10)

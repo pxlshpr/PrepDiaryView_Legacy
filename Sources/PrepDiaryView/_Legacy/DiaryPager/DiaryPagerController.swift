@@ -22,7 +22,9 @@ public protocol DiaryPagerDelegate {
 public class DiaryPagerController: ObservableObject {
     @Published var currentDate: Date = Date()
     @Published var page: Page = .withIndex(1)
-    @Published var dayIndices = [-1, 0, 1]
+//    @Published var dayIndices = 0..<15
+    @Published var dayIndices = PrepConstants.dayIndices
+//    @Published var dayIndices = [-1, 0, 1]
     @Published var isTransitioning = false
     
     //TODO: CoreData
@@ -32,12 +34,14 @@ public class DiaryPagerController: ObservableObject {
     let delegate: DiaryPagerDelegate
     
     let initialDate: Date
+    @Published var referenceDate: Date
     
 //    init(actionHandler: @escaping ((DiaryPagerAction) -> ())) {
     public init(delegate: DiaryPagerDelegate) {
 //        self.actionHandler = actionHandler
         self.delegate = delegate
         initialDate = Date()
+        referenceDate = initialDate
     }
     
     public func copy(with delegate: DiaryPagerDelegate) -> DiaryPagerController {
@@ -159,7 +163,7 @@ public class DiaryPagerController: ObservableObject {
     
     //MARK: - Direct Actions
     func tappedPreviousDay() {
-        print("⚪️ 📆 DiaryPager tappedPreviousDay()")
+        cprint("⚪️ 📆 DiaryPager tappedPreviousDay()")
         guard !isTransitioning else { return }
 
         withAnimation {
@@ -175,7 +179,7 @@ public class DiaryPagerController: ObservableObject {
     }
     
     func tappedNextDay() {
-        print("⚪️ 📆 DiaryPager tappedNextDay()")
+        cprint("⚪️ 📆 DiaryPager tappedNextDay()")
         guard !isTransitioning else { return }
 
         withAnimation {
@@ -190,11 +194,16 @@ public class DiaryPagerController: ObservableObject {
         }
     }
     
+    /**
+     8  9   10  11  12  13  14   0   1   2   3   4   5   6   7
+                       X
+     */
     func dateForDayIndex(_ dayIndex: Int) -> Date {
-        /// Using `initialDate` (set at init) instead so that passing midnight doesn't mess things up
-//        let date = Date().moveDayBy(dayIndex)
-        let date = initialDate.moveDayBy(dayIndex)
-        return date
+        if dayIndex > PrepConstants.slidingWindowSize {
+            return referenceDate.moveDayBy(-(PrepConstants.slidingWindowFullSize - dayIndex))
+        } else {
+            return referenceDate.moveDayBy(dayIndex)
+        }
     }
     
     //MARK: - Helpers

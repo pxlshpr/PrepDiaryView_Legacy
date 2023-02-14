@@ -85,11 +85,11 @@ public struct DiaryView<PageContent: View>: View {
     
     var navigationView: some View {
         VStack(spacing: 0) {
-            if showingWeekPager {
-                weekDatePicker
-                    .background(.thinMaterial)
-                Divider()
-            }
+//            if showingWeekPager {
+//                weekDatePicker
+//                    .background(.thinMaterial)
+//                Divider()
+//            }
             pager
         }
         .sheet(isPresented: $showingDatePicker) { datePicker }
@@ -113,10 +113,10 @@ public struct DiaryView<PageContent: View>: View {
                 showingDatePicker = true
             },
             willChangeDate: { date in
-//                print("willChangeDate(to: \(date)")
+//                cprint("willChangeDate(to: \(date)")
             },
             didChangeDate: { date in
-//                print("didChangeDate(to: \(date)")
+//                cprint("didChangeDate(to: \(date)")
             }
         )
     }

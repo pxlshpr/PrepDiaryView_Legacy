@@ -1,6 +1,7 @@
 import SwiftUI
 import SwiftUIPager
 import SwiftHaptics
+import PrepDataTypes
 
 extension WeekDatePicker.DayPager {
     
@@ -80,13 +81,13 @@ extension WeekDatePicker.DayPager.Controller {
             self.currentDate = newDate
             
             if pageIndex == 2 {
-                print("4️⃣ Sliding window forward because pageIndex == 2")
+                cprint("4️⃣ Sliding window forward because pageIndex == 2")
                 self.slideWindowForward()
             } else if pageIndex == 0 {
-                print("4️⃣ Sliding window backward because pageIndex == 1")
+                cprint("4️⃣ Sliding window backward because pageIndex == 1")
                 self.slideWindowBackward()
             } else {
-                print("4️⃣ Not Sliding window because pageIndex == \(pageIndex)")
+                cprint("4️⃣ Not Sliding window because pageIndex == \(pageIndex)")
             }
         }
     }
@@ -125,7 +126,7 @@ extension WeekDatePicker.DayPager.Controller {
     
     /// Removed this due to it being inconsistent (seems like we're doubling up with DiaryPager)
     func tappedPreviousDay() {
-        print("⚪️ 🗓 WeekDatePicker tappedPreviousDay()")
+        cprint("⚪️ 🗓 WeekDatePicker tappedPreviousDay()")
         guard !isTransitioning else { return }
 
         withAnimation {
@@ -140,7 +141,7 @@ extension WeekDatePicker.DayPager.Controller {
     }
     
     func tappedNextDay() {
-        print("⚪️ 🗓 WeekDatePicker tappedNextDay()")
+        cprint("⚪️ 🗓 WeekDatePicker tappedNextDay()")
         guard !isTransitioning else { return }
 
         withAnimation {

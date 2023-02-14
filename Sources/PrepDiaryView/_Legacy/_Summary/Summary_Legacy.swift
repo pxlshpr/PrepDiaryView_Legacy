@@ -61,7 +61,7 @@
 //            }
 //        }
 //        .onChange(of: controller.viewType) { newViewType in
-//            print("📨 Firing summaryViewTypeChanged notification")
+//            cprint("📨 Firing summaryViewTypeChanged notification")
 //            let userInfo = [Notification.Keys.summaryViewTypeRawValue: controller.viewType.rawValue]
 //            NotificationCenter.default.post(name: .summaryViewTypeChanged, object: nil, userInfo: userInfo)
 //        }
@@ -370,7 +370,7 @@
 ////    var primitivePlottable: String
 ////
 ////    init?(primitivePlottable: String) {
-////        print("📐 Couldn't get a PlottableMeal from : \(primitivePlottable)")
+////        cprint("📐 Couldn't get a PlottableMeal from : \(primitivePlottable)")
 ////        return nil
 //////        self.primitivePlottable = primitivePlottable
 ////    }

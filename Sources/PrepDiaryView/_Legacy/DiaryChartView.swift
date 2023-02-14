@@ -15,7 +15,7 @@ struct DiaryChartView: View {
     }
     
     func getData() {
-//        print("📊 Getting data for: \(date)")
+//        cprint("📊 Getting data for: \(date)")
     }
     
     var chart: some View {
